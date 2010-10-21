@@ -1,0 +1,4 @@
+#!/bin/bash
+
+find . -type f -iname "*.[ch]" | etags -o tags -i -u -
+find . -type f -iname "*.cc" | etags -o tags -a -i -u -

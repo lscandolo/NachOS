@@ -39,6 +39,7 @@
 
 #include "copyright.h"
 #include "utility.h"
+#include "synch.h"
 
 #include <string>
 #include <iostream>
@@ -84,7 +85,7 @@ class Thread {
     int machineState[MachineStateSize];  // all registers except for stackTop
 
   public:
-    Thread(std::string/* char* */ debugName);		// initialize a Thread 
+    Thread(std::string debugName, bool joinable = false); // initialize a Thread 
     ~Thread(); 				// deallocate a Thread
 					// NOTE -- thread being deleted
 					// must not be running when delete 
@@ -99,6 +100,8 @@ class Thread {
 						// relinquish the processor
     void Finish();  				// The thread is done executing
     
+    void Join();
+
     void CheckOverflow();   			// Check if thread has 
 						// overflowed its stack
     void setStatus(ThreadStatus st) { status = st; }
@@ -109,6 +112,9 @@ class Thread {
   private:
     // some of the private data for this class is listed above
     
+    bool isJoinable;                    // Other threads are allowed to call Join on this one
+    Port* joinPort;
+
     int* stack; 	 		// Bottom of the stack 
 					// NULL if this is the main thread
 					// (If NULL, don't deallocate stack)
@@ -118,6 +124,7 @@ class Thread {
     void StackAllocate(VoidFunctionPtr func, int arg);
     					// Allocate a stack for thread.
 					// Used internally by Fork()
+
 
 #ifdef USER_PROGRAM
 // A thread running a user program actually has *two* sets of CPU registers -- 

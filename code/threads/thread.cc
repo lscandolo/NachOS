@@ -32,9 +32,12 @@
 //	"threadName" is an arbitrary string, useful for debugging.
 //----------------------------------------------------------------------
 
-Thread::Thread(std::string threadName)
+Thread::Thread(std::string threadName, bool joinable)
 {
     name = threadName;
+    isJoinable = joinable;
+    if (isJoinable)
+      joinPort = new Port(std::string("joinPort_")+=threadName);
     stackTop = NULL;
     stack = NULL;
     status = JUST_CREATED;
@@ -62,6 +65,9 @@ Thread::~Thread()
     ASSERT(this != currentThread);
     if (stack != NULL)
 	DeallocBoundedArray((char *) stack, StackSize * sizeof(int));
+
+    if (isJoinable)
+      delete joinPort;
 }
 
 //----------------------------------------------------------------------
@@ -88,11 +94,12 @@ void
 Thread::Fork(VoidFunctionPtr func, int arg)
 {
     DEBUG('t', "Forking thread \"%s\" with func = 0x%x, arg = %d\n",
-	  name.c_str(), (int) func, arg);
+    	  name.c_str(), (int) func, arg);
     
     StackAllocate(func, arg);
 
     IntStatus oldLevel = interrupt->SetLevel(IntOff);
+
     scheduler->ReadyToRun(this);	// ReadyToRun assumes that interrupts 
 					// are disabled!
     (void) interrupt->SetLevel(oldLevel);
@@ -148,9 +155,24 @@ Thread::Finish ()
     
     DEBUG('t', "Finishing thread \"%s\"\n", getName().c_str());
     
+    if (isJoinable){
+      DEBUG('t', "Thread \"%s\" waiting to be joined",getName().c_str());
+      joinPort->Receive();
+    }
+    
+
     threadToBeDestroyed = currentThread;
     Sleep();					// invokes SWITCH
     // not reached
+}
+
+//----------------------------------------------------------------------
+// Thread::Join
+//----------------------------------------------------------------------
+
+void Thread::Join(){
+  DEBUG('t',"Joining with thread \"%s\"",name.c_str());
+  joinPort->Send(1);
 }
 
 //----------------------------------------------------------------------

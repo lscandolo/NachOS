@@ -33,7 +33,7 @@
 //	"initialValue" is the initial value of the semaphore.
 //----------------------------------------------------------------------
 
-Semaphore::Semaphore(char* debugName, int initialValue)
+Semaphore::Semaphore(std::string debugName, int initialValue)
 {
     name = debugName;
     value = initialValue;
@@ -100,13 +100,54 @@ Semaphore::V()
 // Dummy functions -- so we can compile our later assignments 
 // Note -- without a correct implementation of Condition::Wait(), 
 // the test case in the network assignment won't work!
-Lock::Lock(char* debugName) {}
-Lock::~Lock() {}
-void Lock::Acquire() {}
-void Lock::Release() {}
+Lock::Lock(std::string debugName) {
+  name.assign(debugName);
+  std::string semName("Semaphore_");
+  name.append(semName);
+  sem = new Semaphore(semName,1);
+}
+Lock::~Lock() {
+  delete sem;
+}
+void Lock::Acquire() {
+  sem->P();
+  ownerThread = currentThread;
+}
+void Lock::Release() {
+  if (isHeldByCurrentThread()){
+    ownerThread = NULL;
+    sem->V();
+  }
+  else{
+    std::cout << "Thread " << currentThread->getName() << " tried to unlock " << name << " but it does not own it.";
+  }
+}
 
-Condition::Condition(char* debugName) { }
-Condition::~Condition() { }
-void Condition::Wait(Lock* conditionLock) { ASSERT(FALSE); }
-void Condition::Signal(Lock* conditionLock) { }
-void Condition::Broadcast(Lock* conditionLock) { }
+bool Lock::isHeldByCurrentThread(){
+  return currentThread == ownerThread;
+}
+
+Condition::Condition(std::string debugName) {}
+Condition::~Condition() {}
+
+void Condition::Wait(Lock* conditionLock) {
+  conditionLock->Acquire();
+  threadQueue.push(currentThread);
+  conditionLock->Release();
+  currentThread->Sleep();
+}
+void Condition::Signal(Lock* conditionLock) {
+  conditionLock->Acquire();
+  scheduler->ReadyToRun(threadQueue.front());
+  threadQueue.pop();
+  conditionLock->Release();
+}
+
+void Condition::Broadcast(Lock* conditionLock) { 
+  conditionLock->Acquire();
+  while (!threadQueue.empty()){
+    scheduler->ReadyToRun(threadQueue.front());
+    threadQueue.pop();
+  }
+  conditionLock->Release();
+}

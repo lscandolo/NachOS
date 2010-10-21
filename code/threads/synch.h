@@ -18,12 +18,14 @@
 #define SYNCH_H
 
 #include "copyright.h"
-#include "thread.h"
+// #include "thread.h"
 #include "list.h"
 
 #include <string>
 #include <iostream>
 #include <queue>
+
+class Thread;
 
 // The following class defines a "semaphore" whose value is a non-negative
 // integer.  The semaphore has only two operations P() and V():
@@ -39,6 +41,7 @@
 // into a register, a context switch might have occurred,
 // and some other thread might have called P or V, so the true value might
 // now be different.
+
 
 class Semaphore {
   public:
@@ -84,6 +87,7 @@ class Lock {
     std::string name;			// for debugging
     Thread* ownerThread;                // For Science!!
     Semaphore* sem;
+
 };
 
 // the following class defines a "condition variable".  A condition
@@ -137,6 +141,28 @@ class Condition {
     std::queue<Thread*> threadQueue;
 };
 
+
+class Port {
+ public:
+  Port(std::string debugName);
+  ~Port();
+  std::string getName(){return name;}
+
+  void Send(int msg);
+  int Receive();
+
+ private:
+  std::string name;
+
+  Lock*      lock;
+  Condition* senderCondition;
+  Condition* receiverCondition;
+
+  unsigned int senders;
+  unsigned int receivers;
+  int buffer;
+  bool bufferEmpty;
+};
 
 
 

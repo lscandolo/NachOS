@@ -127,27 +127,85 @@ bool Lock::isHeldByCurrentThread(){
   return currentThread == ownerThread;
 }
 
+/////////////////////////// Condition ////////////////////////////////
+
 Condition::Condition(std::string debugName) {}
 Condition::~Condition() {}
 
 void Condition::Wait(Lock* conditionLock) {
-  conditionLock->Acquire();
   threadQueue.push(currentThread);
+
+  IntStatus oldLevel = interrupt->SetLevel(IntOff);
+
   conditionLock->Release();
   currentThread->Sleep();
-}
-void Condition::Signal(Lock* conditionLock) {
+
+  (void) interrupt->SetLevel(oldLevel);
+
   conditionLock->Acquire();
-  scheduler->ReadyToRun(threadQueue.front());
-  threadQueue.pop();
-  conditionLock->Release();
+}
+
+void Condition::Signal(Lock* conditionLock) {
+  if (!threadQueue.empty()){
+    scheduler->ReadyToRun(threadQueue.front());
+    threadQueue.pop();
+  }
 }
 
 void Condition::Broadcast(Lock* conditionLock) { 
-  conditionLock->Acquire();
   while (!threadQueue.empty()){
     scheduler->ReadyToRun(threadQueue.front());
     threadQueue.pop();
   }
-  conditionLock->Release();
+}
+
+///////////////////////////// Port //////////////////////////////////
+
+Port::Port(std::string debugName){
+  
+  senderCondition = new Condition(std::string("SenderCondition_")+=debugName);
+  receiverCondition = new Condition(std::string("ReceiverCondition_")+=debugName);
+  lock = new Lock(std::string("lock_")+=debugName);
+  bufferEmpty = true;
+  receivers = senders = 0;
+}
+Port::~Port(){
+  delete lock;
+  delete senderCondition;
+  delete receiverCondition;
+}
+
+void Port::Send(int msg){
+  lock->Acquire();
+
+  senders++;
+
+  while (receivers == 0 || !bufferEmpty)
+    senderCondition->Wait(lock);
+
+  buffer = msg;  bufferEmpty = false;
+  senders--;
+
+  receiverCondition->Signal(lock);
+
+  lock->Release();
+}
+
+int Port::Receive(){
+
+  lock->Acquire();
+  receivers++;
+
+  while (bufferEmpty){
+    if (senders > 0)
+      senderCondition->Signal(lock);
+    receiverCondition->Wait(lock);
+  }
+  
+  int msg = buffer;
+  bufferEmpty = true;
+  receivers--;
+  
+  lock->Release();
+  return msg;
 }

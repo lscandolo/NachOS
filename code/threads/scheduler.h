@@ -13,6 +13,18 @@
 #include "list.h"
 #include "thread.h"
 
+#include <algorithm>
+#include <set>
+
+typedef Thread* ThreadP;
+
+class ThreadCompare{
+ public:
+  bool operator() (const ThreadP& lhs, const ThreadP& rhs) const{
+    return (lhs->getPriority()) < (rhs->getPriority());
+  }
+};
+
 // The following class defines the scheduler/dispatcher abstraction -- 
 // the data structures and operations needed to keep track of which 
 // thread is running, and which threads are ready but not running.
@@ -29,8 +41,13 @@ class Scheduler {
     void Print();			// Print contents of ready list
     
   private:
-    List *readyList;  		// queue of threads that are ready to run,
-				// but not running
+
+    typedef
+      std::multiset<ThreadP, ThreadCompare>
+      readyList_t;
+
+    readyList_t readyList; // queue of threads that are ready to run,
+                            // but not running
 };
 
 #endif // SCHEDULER_H

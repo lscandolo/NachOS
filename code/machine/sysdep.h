@@ -12,6 +12,7 @@
 #define SYSDEP_H
 
 #include "copyright.h"
+#include <stdlib.h>
 
 // Check file to see if there are any characters to be read.
 // If no characters in the file, return without waiting.

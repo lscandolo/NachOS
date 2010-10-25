@@ -20,6 +20,7 @@
 #include "synch.h"
 #include "system.h"
 
+#define DEFAULT_PRIORITY 10             // Default thread priority
 #define STACK_FENCEPOST 0xdeadbeef	// this is put at the top of the
 					// execution stack, for detecting 
 					// stack overflows
@@ -38,6 +39,8 @@ Thread::Thread(std::string threadName, bool joinable)
     isJoinable = joinable;
     if (isJoinable)
       joinPort = new Port(std::string("joinPort_")+=threadName);
+    priority = DEFAULT_PRIORITY;
+    priorityLock = new Lock(std::string("priorityLock_")+=name);
     stackTop = NULL;
     stack = NULL;
     status = JUST_CREATED;
@@ -68,6 +71,7 @@ Thread::~Thread()
 
     if (isJoinable)
       delete joinPort;
+    delete priorityLock;
 }
 
 //----------------------------------------------------------------------
@@ -129,6 +133,24 @@ Thread::CheckOverflow()
 #else
 	ASSERT(*stack == STACK_FENCEPOST);
 #endif
+}
+
+//----------------------------------------------------------------------
+// Thread::setPriority
+//----------------------------------------------------------------------
+unsigned int Thread::setPriority(unsigned int new_priority){
+  priorityLock->Acquire();
+  unsigned old_priority = priority;
+  priority = new_priority;
+  priorityLock->Release();
+  return old_priority;
+}
+
+//----------------------------------------------------------------------
+// Thread::getPriority
+//----------------------------------------------------------------------
+unsigned int Thread::getPriority(){
+  return priority;
 }
 
 //----------------------------------------------------------------------

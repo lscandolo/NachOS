@@ -23,6 +23,7 @@
 #include "system.h"
 #include "thread.h"
 
+
 //----------------------------------------------------------------------
 // Scheduler::Scheduler
 // 	Initialize the list of ready but not running threads to empty.
@@ -30,7 +31,6 @@
 
 Scheduler::Scheduler()
 { 
-    readyList = new List; 
 } 
 
 //----------------------------------------------------------------------
@@ -40,7 +40,6 @@ Scheduler::Scheduler()
 
 Scheduler::~Scheduler()
 { 
-    delete readyList; 
 } 
 
 //----------------------------------------------------------------------
@@ -56,8 +55,8 @@ Scheduler::ReadyToRun (Thread *thread)
 {
   DEBUG('t', "Putting thread %s on ready list.\n", thread->getName().c_str());
 
-    thread->setStatus(READY);
-    readyList->Append((void *)thread);
+  thread->setStatus(READY);
+  readyList.insert(thread);
 }
 
 //----------------------------------------------------------------------
@@ -71,7 +70,14 @@ Scheduler::ReadyToRun (Thread *thread)
 Thread *
 Scheduler::FindNextToRun ()
 {
-    return (Thread *)readyList->Remove();
+  
+  if (readyList.empty())
+    return NULL;
+
+  readyList_t::iterator it = readyList.begin();
+  Thread* next = *it;
+  readyList.erase(it);
+  return next;
 }
 
 //----------------------------------------------------------------------
@@ -140,9 +146,15 @@ Scheduler::Run (Thread *nextThread)
 // 	Print the scheduler state -- in other words, the contents of
 //	the ready list.  For debugging.
 //----------------------------------------------------------------------
+
+void printThread(Thread* t){
+  t->Print();
+}
+
 void
 Scheduler::Print()
 {
     printf("Ready list contents:\n");
-    readyList->Mapcar((VoidFunctionPtr) ThreadPrint);
+    
+    std::for_each(readyList.begin(), readyList.end(),printThread);
 }

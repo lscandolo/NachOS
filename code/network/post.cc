@@ -18,7 +18,7 @@
 
 #include "copyright.h"
 #include "post.h"
-
+#include <string>
 //----------------------------------------------------------------------
 // Mail::Mail
 //      Initialize a single mail message, by concatenating the headers to
@@ -189,7 +189,7 @@ PostOffice::PostOffice(NetworkAddress addr, double reliability, int nBoxes)
 
 // Finally, create a thread whose sole job is to wait for incoming messages,
 //   and put them in the right mailbox. 
-    Thread *t = new Thread("postal worker");
+    Thread *t = new Thread(std::string("postal worker"));
 
     t->Fork(PostalHelper, (int) this);
 }

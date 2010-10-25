@@ -30,6 +30,7 @@
 
 #include "network.h"
 #include "synchlist.h"
+#include "thread.h"
 
 // Mailbox address -- uniquely identifies a mailbox on a given machine.
 // A mailbox is just a place for temporary storage for messages.

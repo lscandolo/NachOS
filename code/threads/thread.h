@@ -93,7 +93,7 @@ class Thread {
 
     // basic thread operations
 
-    void Fork(VoidFunctionPtr func, int arg); 	// Make thread run (*func)(arg)
+    void Fork(VoidFunctionPtr func, int arg); // Make thread run (*func)(arg)
     void Yield();  				// Relinquish the CPU if any 
 						// other thread is runnable
     void Sleep();  				// Put the thread to sleep argnd 
@@ -105,15 +105,24 @@ class Thread {
     void CheckOverflow();   			// Check if thread has 
 						// overflowed its stack
     void setStatus(ThreadStatus st) { status = st; }
-    std::string/* char* */ getName() { return name; }
+    std::string getName() { return name; }
     void Print() { std::cout << name << ", "; }
+
+    unsigned int setPriority(unsigned int new_priority);
+    unsigned int getPriority();
+   
 
 
   private:
     // some of the private data for this class is listed above
     
-    bool isJoinable;                    // Other threads are allowed to call Join on this one
-    Port* joinPort;
+    bool isJoinable;                    // Other threads are allowed 
+                                        // to call Join on this one
+    Port* joinPort;                    // Port for Join
+    
+
+    unsigned int priority;            // Thread priority
+    Lock*         priorityLock;        // Thread pirority Lock
 
     int* stack; 	 		// Bottom of the stack 
 					// NULL if this is the main thread
@@ -124,6 +133,8 @@ class Thread {
     void StackAllocate(VoidFunctionPtr func, int arg);
     					// Allocate a stack for thread.
 					// Used internally by Fork()
+    
+
 
 
 #ifdef USER_PROGRAM

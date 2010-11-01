@@ -44,6 +44,7 @@
 #include <string>
 #include <iostream>
 
+
 #ifdef USER_PROGRAM
 #include "machine.h"
 #include "addrspace.h"
@@ -59,6 +60,8 @@
 // WATCH OUT IF THIS ISN'T BIG ENOUGH!!!!!
 #define StackSize	(4 * 1024)	// in words
 
+// Maximum priority possible
+#define MAX_PRIORITY 100
 
 // Thread state
 enum ThreadStatus { JUST_CREATED, RUNNING, READY, BLOCKED };
@@ -108,11 +111,9 @@ class Thread {
     std::string getName() { return name; }
     void Print() { std::cout << name << ", "; }
 
-    unsigned int setPriority(unsigned int new_priority);
-    unsigned int getPriority();
+    void          setPriority(unsigned int new_priority);
+    unsigned int getPriority() const;
    
-
-
   private:
     // some of the private data for this class is listed above
     
@@ -122,7 +123,6 @@ class Thread {
     
 
     unsigned int priority;            // Thread priority
-    Lock*         priorityLock;        // Thread pirority Lock
 
     int* stack; 	 		// Bottom of the stack 
 					// NULL if this is the main thread
@@ -134,8 +134,6 @@ class Thread {
     					// Allocate a stack for thread.
 					// Used internally by Fork()
     
-
-
 
 #ifdef USER_PROGRAM
 // A thread running a user program actually has *two* sets of CPU registers -- 

@@ -25,6 +25,7 @@
 					// execution stack, for detecting 
 					// stack overflows
 
+
 //----------------------------------------------------------------------
 // Thread::Thread
 // 	Initialize a thread control block, so that we can then call
@@ -40,7 +41,6 @@ Thread::Thread(std::string threadName, bool joinable)
     if (isJoinable)
       joinPort = new Port(std::string("joinPort_")+=threadName);
     priority = DEFAULT_PRIORITY;
-    priorityLock = new Lock(std::string("priorityLock_")+=name);
     stackTop = NULL;
     stack = NULL;
     status = JUST_CREATED;
@@ -71,7 +71,6 @@ Thread::~Thread()
 
     if (isJoinable)
       delete joinPort;
-    delete priorityLock;
 }
 
 //----------------------------------------------------------------------
@@ -138,18 +137,14 @@ Thread::CheckOverflow()
 //----------------------------------------------------------------------
 // Thread::setPriority
 //----------------------------------------------------------------------
-unsigned int Thread::setPriority(unsigned int new_priority){
-  priorityLock->Acquire();
-  unsigned old_priority = priority;
+void Thread::setPriority(unsigned int new_priority){
   priority = new_priority;
-  priorityLock->Release();
-  return old_priority;
 }
 
 //----------------------------------------------------------------------
 // Thread::getPriority
 //----------------------------------------------------------------------
-unsigned int Thread::getPriority(){
+unsigned int Thread::getPriority() const{
   return priority;
 }
 

@@ -283,26 +283,30 @@ bin/encode.h,1691
 #define I_BGEZAL	103,1704
 #define I_NOP 107,1752
 
-threads/thread.h,826
+threads/thread.h,993
 #define THREAD_H38,1546
-#define MachineStateSize 54,1909
-#define StackSize	59,2032
-enum ThreadStatus 63,2091
-enum ThreadStatus { JUST_CREATED,63,2091
-enum ThreadStatus { JUST_CREATED, RUNNING,63,2091
-enum ThreadStatus { JUST_CREATED, RUNNING, READY,63,2091
-enum ThreadStatus { JUST_CREATED, RUNNING, READY, BLOCKED 63,2091
-class Thread 79,2715
-    int* stackTop;Thread::stackTop83,2863
-    int machineState[Thread::machineState84,2914
-    void setStatus(Thread::setStatus104,3648
-    std::string/* char* */ getName(Thread::getName105,3701
-    void Print(Thread::Print106,3755
-    int* stack;Thread::stack112,3884
-    ThreadStatus status;Thread::status115,4010
-    std::string name;Thread::name116,4065
-    int userRegisters[Thread::userRegisters127,4419
-    AddrSpace *space;Thread::space133,4629
+#define MachineStateSize 56,1929
+#define StackSize	61,2052
+#define MAX_PRIORITY 64,2123
+enum ThreadStatus 67,2165
+enum ThreadStatus { JUST_CREATED,67,2165
+enum ThreadStatus { JUST_CREATED, RUNNING,67,2165
+enum ThreadStatus { JUST_CREATED, RUNNING, READY,67,2165
+enum ThreadStatus { JUST_CREATED, RUNNING, READY, BLOCKED 67,2165
+class Thread 83,2789
+    int* stackTop;Thread::stackTop87,2937
+    int machineState[Thread::machineState88,2988
+    void setStatus(Thread::setStatus110,3750
+    std::string getName(Thread::getName111,3803
+    void Print(Thread::Print112,3846
+    bool isJoinable;Thread::isJoinable120,4074
+    Port* joinPort;Thread::joinPort122,4212
+    unsigned int priority;Thread::priority125,4274
+    int* stack;Thread::stack127,4332
+    ThreadStatus status;Thread::status130,4458
+    std::string name;Thread::name131,4513
+    int userRegisters[Thread::userRegisters143,4872
+    AddrSpace *space;Thread::space149,5082
 
 threads/switch.h,2185
 #define SWITCH_H19,584
@@ -401,22 +405,32 @@ static char *copyright copyright23,1095
 threads/system.h,23
 #define SYSTEM_H9,296
 
-threads/synch.h,620
+threads/synch.h,1073
 #define SYNCH_H18,686
-class Semaphore 43,1520
-    std::string getName(Semaphore::getName47,1673
-    std::string name;Semaphore::name53,1862
-    int value;Semaphore::value54,1915
-    List *queue;Semaphore::queue55,1970
-class Lock 70,2542
-    std::string getName(Lock::getName74,2666
-    std::string name;Lock::name84,3026
-    Thread* ownerThread;Lock::ownerThread85,3067
-    Semaphore* sem;Lock::sem86,3124
-class Condition 121,4731
-    std::string getName(Condition::getName126,4899
-    std::string name;Condition::name136,5310
-    std::queue<Thread*> threadQueue;Condition::threadQueue137,5332
+class Semaphore 46,1539
+    std::string getName(Semaphore::getName50,1692
+    std::string name;Semaphore::name56,1881
+    int value;Semaphore::value57,1934
+    List *queue;Semaphore::queue58,1989
+class Lock 73,2561
+    std::string getName(Lock::getName77,2685
+    std::string name;Lock::name87,3045
+    Thread* ownerThread;Lock::ownerThread88,3086
+    Semaphore* sem;Lock::sem89,3143
+class Condition 125,4755
+    std::string getName(Condition::getName130,4923
+    std::string name;Condition::name140,5334
+    std::queue<Thread*> threadQueue;Condition::threadQueue141,5356
+class Port 145,5398
+  std::string getName(Port::getName149,5462
+  std::string name;Port::name155,5551
+  Lock*      lock;Port::lock157,5572
+  Condition* senderCondition;Port::senderCondition158,5591
+  Condition* receiverCondition;Port::receiverCondition159,5621
+  unsigned int senders;Port::senders161,5654
+  unsigned int receivers;Port::receivers162,5678
+  int buffer;Port::buffer163,5704
+  bool bufferEmpty;Port::bufferEmpty164,5718
 
 threads/list.h,286
 #define LIST_H14,517
@@ -435,10 +449,14 @@ class SynchList 24,731
     Lock *lock;SynchList::lock38,1236
     Condition *listEmpty;SynchList::listEmpty39,1301
 
-threads/scheduler.h,101
+threads/scheduler.h,305
 #define SCHEDULER_H10,362
-class Scheduler 20,654
-    List *readyList;Scheduler::readyList32,1099
+class ThreadCompare{ThreadCompare21,514
+  bool operator() ThreadCompare::operator()23,544
+class Scheduler 33,934
+      std::multiset<Thread*Scheduler::Thread47,1392
+      readyList_t;Scheduler::readyList_t48,1436
+    readyList_t readyList;Scheduler::readyList50,1456
 
 threads/utility.h,271
 #define UTILITY_H24,910
@@ -452,26 +470,26 @@ typedef void (*VoidNoArgFunctionPtr)VoidNoArgFunctionPtr52,1724
 
 network/post.h,893
 #define POST_H29,1280
-typedef int MailBoxAddress;36,1478
-class MailHeader 42,1671
-    MailBoxAddress to;MailHeader::to44,1700
-    MailBoxAddress from;MailHeader::from45,1748
-    unsigned length;MailHeader::length46,1797
-#define MaxMailSize 53,2009
-class Mail 62,2267
-     PacketHeader pktHdr;Mail::pktHdr68,2435
-     MailHeader mailHdr;Mail::mailHdr69,2491
-     char data[Mail::data70,2549
-class MailBox 78,2849
-    SynchList *messages;MailBox::messages90,3284
-class PostOffice 102,3800
-    Network *network;PostOffice::network132,4919
-    NetworkAddress netAddr;PostOffice::netAddr133,4973
-    MailBox *boxes;PostOffice::boxes134,5036
-    int numBoxes;PostOffice::numBoxes135,5102
-    Semaphore *messageAvailable;PostOffice::messageAvailable136,5145
-    Semaphore *messageSent;PostOffice::messageSent137,5223
-    Lock *sendLock;PostOffice::sendLock138,5300
+typedef int MailBoxAddress;37,1498
+class MailHeader 43,1691
+    MailBoxAddress to;MailHeader::to45,1720
+    MailBoxAddress from;MailHeader::from46,1768
+    unsigned length;MailHeader::length47,1817
+#define MaxMailSize 54,2029
+class Mail 63,2287
+     PacketHeader pktHdr;Mail::pktHdr69,2455
+     MailHeader mailHdr;Mail::mailHdr70,2511
+     char data[Mail::data71,2569
+class MailBox 79,2869
+    SynchList *messages;MailBox::messages91,3304
+class PostOffice 103,3820
+    Network *network;PostOffice::network133,4939
+    NetworkAddress netAddr;PostOffice::netAddr134,4993
+    MailBox *boxes;PostOffice::boxes135,5056
+    int numBoxes;PostOffice::numBoxes136,5122
+    Semaphore *messageAvailable;PostOffice::messageAvailable137,5165
+    Semaphore *messageSent;PostOffice::messageSent138,5243
+    Lock *sendLock;PostOffice::sendLock139,5320
 
 machine/console.h,409
 #define CONSOLE_H24,1027
@@ -837,9 +855,16 @@ threads/main.cc,55
 #undef MAIN51,1911
 main(79,2798
 
-threads/threadtest.cc,41
-SimpleThread(25,826
-ThreadTest(42,1300
+threads/threadtest.cc,196
+Port* port;20,631
+SimpleThread(32,975
+PortTestThread(50,1406
+void PortTest(73,1823
+Joiner(96,2342
+Joinee(124,2958
+ForkerThread(139,3174
+void SimpleThreadTest(160,3892
+ThreadTest(176,4293
 
 threads/utility.cc,103
 static char *enableFlags enableFlags28,688
@@ -847,7 +872,7 @@ DebugInit(42,1174
 DebugIsEnabled(53,1472
 DEBUG(69,1919
 
-threads/synch.cc,412
+threads/synch.cc,509
 Semaphore::Semaphore(36,1543
 Semaphore::~Semaphore(49,1954
 Semaphore::P(65,2438
@@ -855,29 +880,37 @@ Semaphore::V(88,3221
 Lock::Lock(103,3705
 Lock::~Lock(109,3864
 void Lock::Acquire(112,3896
-void Lock::Release(116,3964
-bool Lock::isHeldByCurrentThread(126,4193
-Condition::Condition(130,4271
-Condition::~Condition(131,4318
-void Condition::Wait(133,4346
-void Condition::Signal(139,4509
-void Condition::Broadcast(146,4681
+void Lock::Release(119,4099
+bool Lock::isHeldByCurrentThread(129,4328
+Condition::Condition(135,4478
+Condition::~Condition(136,4525
+void Condition::Wait(138,4553
+void Condition::Signal(151,4813
+void Condition::Broadcast(158,4966
+Port::Port(167,5197
+Port::~Port(175,5500
+void Port::Send(181,5587
+int Port::Receive(197,5832
 
-threads/thread.cc,409
-#define STACK_FENCEPOST 23,864
-Thread::Thread(35,1308
-Thread::~Thread(58,1984
-Thread::Fork(88,2994
-Thread::CheckOverflow(117,4150
-Thread::Finish 144,5075
-Thread::Yield 175,6189
-Thread::Sleep 212,7591
-static void ThreadFinish(236,8426
-static void InterruptEnable(237,8485
-void ThreadPrint(238,8540
-Thread::StackAllocate 253,9083
-Thread::SaveUserState(299,10815
-Thread::RestoreUserState(315,11385
+threads/thread.cc,549
+#define DEFAULT_PRIORITY 23,864
+#define STACK_FENCEPOST 24,931
+Thread::Thread(37,1376
+Thread::~Thread(64,2212
+Thread::Fork(97,3266
+Thread::CheckOverflow(127,4427
+void Thread::setPriority(140,4803
+unsigned int Thread::getPriority(147,5055
+Thread::Finish 168,5837
+void Thread::Join(190,6403
+Thread::Yield 214,7349
+Thread::Sleep 251,8751
+static void ThreadFinish(275,9586
+static void InterruptEnable(276,9645
+void ThreadPrint(277,9700
+Thread::StackAllocate 292,10243
+Thread::SaveUserState(338,11975
+Thread::RestoreUserState(354,12545
 
 threads/list.cc,249
 ListElement::ListElement(31,1139
@@ -906,13 +939,14 @@ TimerInterruptHandler(61,2000
 Initialize(78,2664
 Cleanup(172,5158
 
-threads/scheduler.cc,177
-Scheduler::Scheduler(31,1140
-Scheduler::~Scheduler(41,1412
-Scheduler::ReadyToRun 55,1810
-Scheduler::FindNextToRun 72,2343
-Scheduler::Run 92,3042
-Scheduler::Print(144,5021
+threads/scheduler.cc,204
+Scheduler::Scheduler(32,1141
+Scheduler::~Scheduler(41,1386
+Scheduler::ReadyToRun 54,1761
+Scheduler::FindNextToRun 71,2287
+Scheduler::Run 98,3098
+void printThread(150,5097
+Scheduler::Print(155,5148
 
 threads/synchlist.cc,141
 SynchList::SynchList(25,888
@@ -925,22 +959,22 @@ network/nettest.cc,18
 MailTest(34,1179
 
 network/post.cc,472
-Mail::Mail(32,1193
-MailBox::MailBox(50,1727
-MailBox::~MailBox(63,2105
-PrintHeader(78,2558
-MailBox::Put(98,3284
-MailBox::Get(120,4059
-static void PostalHelper(148,5114
-static void ReadAvail(150,5211
-static void WriteDone(152,5305
-PostOffice::PostOffice(174,6337
-PostOffice::~PostOffice(202,7345
-PostOffice::PostalDelivery(220,7873
-PostOffice::Send(260,9069
-PostOffice::Receive(307,10680
-PostOffice::IncomingPacket(324,11230
-PostOffice::PacketSent(340,11706
+Mail::Mail(32,1210
+MailBox::MailBox(50,1744
+MailBox::~MailBox(63,2122
+PrintHeader(78,2575
+MailBox::Put(98,3301
+MailBox::Get(120,4076
+static void PostalHelper(148,5131
+static void ReadAvail(150,5228
+static void WriteDone(152,5322
+PostOffice::PostOffice(174,6354
+PostOffice::~PostOffice(202,7375
+PostOffice::PostalDelivery(220,7903
+PostOffice::Send(260,9099
+PostOffice::Receive(307,10710
+PostOffice::IncomingPacket(324,11260
+PostOffice::PacketSent(340,11736
 
 machine/interrupt.cc,525
 static char *intLevelNames[intLevelNames29,891
@@ -1038,32 +1072,32 @@ Instruction::Decode(590,15775
 Mult(636,16920
 
 machine/sysdep.cc,566
-PollFile(113,3776
-OpenForWrite(147,4823
-OpenForReadWrite(164,5244
-Read(178,5608
-ReadPartial(191,5969
-WriteFile(203,6284
-Lseek(215,6631
-Tell(227,6956
-Close(243,7302
-Unlink(255,7557
-OpenSocket(268,7964
-CloseSocket(284,8291
-InitSocketName(295,8573
-AssignNameToSocket(308,8971
-DeAssignNameToSocket(326,9583
-PollSocket(337,9903
-ReadFromSocket(347,10236
-SendToSocket(370,10923
-CallOnUserAbort(389,11468
-Delay(402,11888
-Abort(413,12136
-Exit(424,12355
-RandomInit(436,12696
-Random(447,12941
-AllocBoundedArray(465,13480
-DeallocBoundedArray(484,14049
+PollFile(113,3791
+OpenForWrite(147,4838
+OpenForReadWrite(164,5259
+Read(178,5623
+ReadPartial(191,5984
+WriteFile(203,6299
+Lseek(215,6646
+Tell(227,6971
+Close(243,7317
+Unlink(255,7572
+OpenSocket(268,7979
+CloseSocket(284,8306
+InitSocketName(295,8588
+AssignNameToSocket(308,8986
+DeAssignNameToSocket(326,9598
+PollSocket(337,9918
+ReadFromSocket(347,10251
+SendToSocket(370,10938
+CallOnUserAbort(389,11483
+Delay(402,11903
+Abort(413,12151
+Exit(424,12370
+RandomInit(436,12711
+Random(447,12956
+AllocBoundedArray(465,13495
+DeallocBoundedArray(484,14064
 
 userprog/progtest.cc,239
 StartProcess(24,740

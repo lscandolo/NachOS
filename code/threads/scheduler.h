@@ -16,11 +16,12 @@
 #include <algorithm>
 #include <set>
 
-typedef Thread* ThreadP;
+/* typedef Thread* ThreadP; */
 
 class ThreadCompare{
  public:
-  bool operator() (const ThreadP& lhs, const ThreadP& rhs) const{
+  bool operator() (Thread* const& lhs, Thread* const& rhs) const {
+    /* return (lhs->priority < rhs->priority); */
     return (lhs->getPriority()) < (rhs->getPriority());
   }
 };
@@ -43,7 +44,7 @@ class Scheduler {
   private:
 
     typedef
-      std::multiset<ThreadP, ThreadCompare>
+      std::multiset<Thread*, ThreadCompare>
       readyList_t;
 
     readyList_t readyList; // queue of threads that are ready to run,

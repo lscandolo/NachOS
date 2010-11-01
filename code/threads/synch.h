@@ -87,7 +87,7 @@ class Lock {
     std::string name;			// for debugging
     Thread* ownerThread;                // For Science!!
     Semaphore* sem;
-
+    
 };
 
 // the following class defines a "condition variable".  A condition

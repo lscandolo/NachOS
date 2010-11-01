@@ -110,7 +110,10 @@ Lock::~Lock() {
   delete sem;
 }
 void Lock::Acquire() {
+  unsigned int oldPriority = currentThread->getPriority();
+  currentThread->setPriority(0);
   sem->P();
+  currentThread->setPriority(oldPriority);
   ownerThread = currentThread;
 }
 void Lock::Release() {

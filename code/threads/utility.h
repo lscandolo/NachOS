@@ -82,4 +82,4 @@ extern void DEBUG (char flag, char* format, ...);  	// Print debug message
     }
 
 
-#endif UTILITY_H
+#endif //UTILITY_H

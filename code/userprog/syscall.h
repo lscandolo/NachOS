@@ -43,13 +43,12 @@
  */
 
 /* Stop Nachos, and print out performance stats */
-void Halt();		
- 
+void syscallHalt();		
 
 /* Address space control operations: Exit, Exec, and Join */
 
 /* This user program is done (status = 0 means exited normally). */
-void Exit(int status);	
+void syscallExit(int status);	
 
 /* A unique identifier for an executing user program (address space) */
 typedef int SpaceId;	
@@ -57,12 +56,12 @@ typedef int SpaceId;
 /* Run the executable, stored in the Nachos file "name", and return the 
  * address space identifier
  */
-SpaceId Exec(char *name);
+SpaceId syscallExec(char *name);
  
 /* Only return once the the user program "id" has finished.  
  * Return the exit status.
  */
-int Join(SpaceId id); 	
+int syscallJoin(SpaceId id); 	
  
 
 /* File system operations: Create, Open, Read, Write, Close
@@ -87,15 +86,15 @@ typedef int OpenFileId;
 #define ConsoleOutput	1  
  
 /* Create a Nachos file, with "name" */
-void Create(char *name);
+void syscallCreate(char *name);
 
 /* Open the Nachos file "name", and return an "OpenFileId" that can 
  * be used to read and write to the file.
  */
-OpenFileId Open(char *name);
+OpenFileId syscallOpen(char *name);
 
 /* Write "size" bytes from "buffer" to the open file. */
-void Write(char *buffer, int size, OpenFileId id);
+void syscallWrite(char *buffer, int size, OpenFileId id);
 
 /* Read "size" bytes from the open file into "buffer".  
  * Return the number of bytes actually read -- if the open file isn't
@@ -103,10 +102,10 @@ void Write(char *buffer, int size, OpenFileId id);
  * characters to read, return whatever is available (for I/O devices, 
  * you should always wait until you can return at least one character).
  */
-int Read(char *buffer, int size, OpenFileId id);
+int syscallRead(char *buffer, int size, OpenFileId id);
 
 /* Close the file, we're done reading and writing to it. */
-void Close(OpenFileId id);
+void syscallClose(OpenFileId id);
 
 
 
@@ -117,12 +116,12 @@ void Close(OpenFileId id);
 /* Fork a thread to run a procedure ("func") in the *same* address space 
  * as the current thread.
  */
-void Fork(void (*func)());
+void syscallFork(void (*func)());
 
 /* Yield the CPU to another runnable thread, whether in this address space 
  * or not. 
  */
-void Yield();		
+void syscallYield();		
 
 #endif /* IN_ASM */
 

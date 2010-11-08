@@ -48,6 +48,9 @@
 #ifdef USER_PROGRAM
 #include "machine.h"
 #include "addrspace.h"
+/* #include "fdtable.h" */
+
+class FDTable;
 #endif
 
 // CPU register state to be saved on context switch.  
@@ -133,7 +136,6 @@ class Thread {
     void StackAllocate(VoidFunctionPtr func, int arg);
     					// Allocate a stack for thread.
 					// Used internally by Fork()
-    
 
 #ifdef USER_PROGRAM
 // A thread running a user program actually has *two* sets of CPU registers -- 
@@ -147,6 +149,9 @@ class Thread {
     void RestoreUserState();		// restore user-level register state
 
     AddrSpace *space;			// User code this thread is running.
+
+    FDTable* fdtable;
+
 #endif
 };
 

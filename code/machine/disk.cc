@@ -54,7 +54,7 @@ Disk::Disk(char* name, VoidFunctionPtr callWhenDone, int callArg)
     fileno = OpenForReadWrite(name, FALSE);
     if (fileno >= 0) {		 	// file exists, check magic number 
 	Read(fileno, (char *) &magicNum, MagicSize);
-	ASSERT(magicNum == MagicNumber);
+ 	ASSERT(magicNum == MagicNumber);
     } else {				// file doesn't exist, create it
         fileno = OpenForWrite(name);
 	magicNum = MagicNumber;  

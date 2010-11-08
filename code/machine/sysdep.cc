@@ -144,7 +144,7 @@ PollFile(int fd)
 //----------------------------------------------------------------------
 
 int
-OpenForWrite(char *name)
+OpenForWrite(const char *name)
 {
     int fd = open(name, O_RDWR|O_CREAT|O_TRUNC, 0666);
 
@@ -161,7 +161,7 @@ OpenForWrite(char *name)
 //----------------------------------------------------------------------
 
 int
-OpenForReadWrite(char *name, bool crashOnError)
+OpenForReadWrite(const char *name, bool crashOnError)
 {
     int fd = open(name, O_RDWR, 0);
 
@@ -252,7 +252,7 @@ Close(int fd)
 //----------------------------------------------------------------------
 
 bool 
-Unlink(char *name)
+Unlink(const char *name)
 {
     return unlink(name);
 }

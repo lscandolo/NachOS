@@ -29,6 +29,8 @@ SynchDisk   *synchDisk;
 
 #ifdef USER_PROGRAM	// requires either FILESYS or FILESYS_STUB
 Machine *machine;	// user program memory and registers
+SynchConsole* synchConsole; //Console
+std::bitset<NumVirtPages> usedVirtPages;
 #endif
 
 #ifdef NETWORK
@@ -36,9 +38,40 @@ PostOffice *postOffice;
 #endif
 
 
-// External definition, to allow us to take a pointer to this function
-extern void Cleanup();
+// Declaration, to allow us to take a pointer to this function
+// void Cleanup();
 
+//----------------------------------------------------------------------
+// Cleanup
+// 	Nachos is halting.  De-allocate global data structures.
+//----------------------------------------------------------------------
+void
+Cleanup()
+{
+    printf("\nCleaning up...\n");
+#ifdef NETWORK
+    delete postOffice;
+#endif
+    
+#ifdef USER_PROGRAM
+    delete machine;
+    delete synchConsole;
+#endif
+
+#ifdef FILESYS_NEEDED
+    delete fileSystem;
+#endif
+
+#ifdef FILESYS
+    delete synchDisk;
+#endif
+    
+    delete timer;
+    delete scheduler;
+    delete interrupt;
+    
+    Exit(0);
+}
 
 //----------------------------------------------------------------------
 // TimerInterruptHandler
@@ -148,7 +181,9 @@ Initialize(int argc, char **argv)
     CallOnUserAbort(Cleanup);			// if user hits ctl-C
     
 #ifdef USER_PROGRAM
-    machine = new Machine(debugUserProg);	// this must come first
+    machine = new Machine(debugUserProg);	  // this must come first
+    synchConsole = new SynchConsole(NULL,NULL); // Console for user programs
+    usedVirtPages.reset();
 #endif
 
 #ifdef FILESYS
@@ -163,35 +198,3 @@ Initialize(int argc, char **argv)
     postOffice = new PostOffice(netname, rely, 10);
 #endif
 }
-
-//----------------------------------------------------------------------
-// Cleanup
-// 	Nachos is halting.  De-allocate global data structures.
-//----------------------------------------------------------------------
-void
-Cleanup()
-{
-    printf("\nCleaning up...\n");
-#ifdef NETWORK
-    delete postOffice;
-#endif
-    
-#ifdef USER_PROGRAM
-    delete machine;
-#endif
-
-#ifdef FILESYS_NEEDED
-    delete fileSystem;
-#endif
-
-#ifdef FILESYS
-    delete synchDisk;
-#endif
-    
-    delete timer;
-    delete scheduler;
-    delete interrupt;
-    
-    Exit(0);
-}
-

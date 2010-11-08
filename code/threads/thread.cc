@@ -20,6 +20,11 @@
 #include "synch.h"
 #include "system.h"
 
+#ifdef USER_PROGRAM
+#include "../userprog/fdtable.h"
+#endif
+
+
 #define DEFAULT_PRIORITY 10             // Default thread priority
 #define STACK_FENCEPOST 0xdeadbeef	// this is put at the top of the
 					// execution stack, for detecting 
@@ -46,6 +51,7 @@ Thread::Thread(std::string threadName, bool joinable)
     status = JUST_CREATED;
 #ifdef USER_PROGRAM
     space = NULL;
+    fdtable = new FDTable();
 #endif
 }
 
@@ -71,6 +77,10 @@ Thread::~Thread()
 
     if (isJoinable)
       delete joinPort;
+
+#ifdef USER_PROGRAM
+    delete fdtable;
+#endif 
 }
 
 //----------------------------------------------------------------------

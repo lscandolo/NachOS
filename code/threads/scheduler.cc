@@ -31,6 +31,7 @@
 
 Scheduler::Scheduler()
 { 
+  readyList = new List();
 } 
 
 //----------------------------------------------------------------------
@@ -40,6 +41,7 @@ Scheduler::Scheduler()
 
 Scheduler::~Scheduler()
 { 
+  delete readyList;
 } 
 
 //----------------------------------------------------------------------
@@ -56,7 +58,7 @@ Scheduler::ReadyToRun (Thread *thread)
   DEBUG('t', "Putting thread %s on ready list.\n", thread->getName().c_str());
 
   thread->setStatus(READY);
-  readyList.insert(thread);
+  readyList->SortedInsert((void*)thread,thread->getPriority());
 }
 
 //----------------------------------------------------------------------
@@ -71,12 +73,10 @@ Thread *
 Scheduler::FindNextToRun ()
 {
   
-  if (readyList.empty())
+  if (readyList->IsEmpty())
     return NULL;
 
-  readyList_t::iterator it = readyList.begin();
-  Thread* next = *it;
-  readyList.erase(it);
+  Thread* next = (Thread*) readyList->SortedRemove(NULL);
   return next;
 }
 
@@ -147,14 +147,10 @@ Scheduler::Run (Thread *nextThread)
 //	the ready list.  For debugging.
 //----------------------------------------------------------------------
 
-void printThread(Thread* t){
-  t->Print();
-}
-
 void
 Scheduler::Print()
 {
     printf("Ready list contents:\n");
     
-    std::for_each(readyList.begin(), readyList.end(),printThread);
+    readyList->Mapcar((VoidFunctionPtr) ThreadPrint);
 }

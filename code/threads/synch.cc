@@ -136,28 +136,26 @@ Condition::Condition(std::string debugName) {}
 Condition::~Condition() {}
 
 void Condition::Wait(Lock* conditionLock) {
-  threadQueue.push(currentThread);
-
-  IntStatus oldLevel = interrupt->SetLevel(IntOff);
+  conditionItem* ci = new conditionItem(currentThread);
+  threadQueue.push(ci);
 
   conditionLock->Release();
-  currentThread->Sleep();
+  ci->sem->P();
 
-  (void) interrupt->SetLevel(oldLevel);
-
+  delete ci;
   conditionLock->Acquire();
 }
 
 void Condition::Signal(Lock* conditionLock) {
   if (!threadQueue.empty()){
-    scheduler->ReadyToRun(threadQueue.front());
+    threadQueue.front()->sem->V();
     threadQueue.pop();
   }
 }
 
 void Condition::Broadcast(Lock* conditionLock) { 
   while (!threadQueue.empty()){
-    scheduler->ReadyToRun(threadQueue.front());
+    threadQueue.front()->sem->V();
     threadQueue.pop();
   }
 }

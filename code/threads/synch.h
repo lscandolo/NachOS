@@ -122,6 +122,17 @@ class Lock {
 // can acquire the lock, and change data structures, before the woken
 // thread gets a chance to run.
 
+struct conditionItem{
+  Thread* thread;
+  Semaphore* sem;
+
+  conditionItem(Thread* t){
+    sem = new Semaphore(std::string("Condition_item_sem"),0);
+    thread = t;
+  }
+  ~conditionItem(){delete sem;}
+};
+
 class Condition {
   public:
     Condition(std::string debugName);		// initialize condition to 
@@ -138,7 +149,7 @@ class Condition {
 					// these operations
   private:
     std::string name;
-    std::queue<Thread*> threadQueue;
+    std::queue<conditionItem*> threadQueue;
 };
 
 

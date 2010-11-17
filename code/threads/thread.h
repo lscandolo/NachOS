@@ -43,7 +43,7 @@
 
 #include <string>
 #include <iostream>
-
+#include <set>
 
 #ifdef USER_PROGRAM
 #include "machine.h"
@@ -81,86 +81,89 @@ extern void ThreadPrint(int arg);
 //  that only run in the kernel have a NULL address space.
 
 class Thread {
-  private:
-    // NOTE: DO NOT CHANGE the order of these first two members.
-    // THEY MUST be in this position for SWITCH to work.
-    int* stackTop;			 // the current stack pointer
-    int machineState[MachineStateSize];  // all registers except for stackTop
+private:
+  // NOTE: DO NOT CHANGE the order of these first two members.
+  // THEY MUST be in this position for SWITCH to work.
+  int* stackTop;			 // the current stack pointer
+  int machineState[MachineStateSize];  // all registers except for stackTop
 
-  public:
-    Thread(std::string debugName, bool joinable = false); // initialize a Thread 
-    ~Thread(); 				// deallocate a Thread
+public:
+  Thread(std::string debugName, bool joinable = false); // initialize a Thread 
+  ~Thread(); 				// deallocate a Thread
 					// NOTE -- thread being deleted
 					// must not be running when delete 
 					// is called
 
-    // basic thread operations
+  // basic thread operations
 
-    void Fork(VoidFunctionPtr func, int arg); // Make thread run (*func)(arg)
-    void Yield();  				// Relinquish the CPU if any 
+  void Fork(VoidFunctionPtr func, int arg); // Make thread run (*func)(arg)
+  void Yield();  				// Relinquish the CPU if any 
 						// other thread is runnable
-    void Sleep();  				// Put the thread to sleep argnd 
+  void Sleep();  				// Put the thread to sleep argnd 
 						// relinquish the processor
-    void Finish();  				// The thread is done executing
+  void Finish();  				// The thread is done executing
     
-    void Join();
+  void Join();
+  void addChildToJoin(Thread* t){childrenToJoin.insert(t);}
+  bool isJoinableChild(Thread* t);
+  void removeChild(Thread* t);
 
-    void CheckOverflow();   			// Check if thread has 
+  void CheckOverflow();   			// Check if thread has 
 						// overflowed its stack
-    void setStatus(ThreadStatus st) { status = st; }
-    std::string getName() { return name; }
-    void Print() { std::cout << name << ", "; }
+  void setStatus(ThreadStatus st) { status = st; }
+  std::string getName() { return name; }
+  void Print() { std::cout << name << ", "; }
 
-    void          setPriority(unsigned int new_priority);
-    unsigned int getPriority() const;
+  void          setPriority(unsigned int new_priority);
+  unsigned int getPriority() const;
    
-  private:
-    // some of the private data for this class is listed above
+private:
+  // some of the private data for this class is listed above
     
-    bool isJoinable;                    // Other threads are allowed 
-                                        // to call Join on this one
-    Port* joinPort;                    // Port for Join
-    
+  bool isJoinable;                    // Other threads are allowed 
+  // to call Join on this one
+  Port* joinPort;                    // Port for Join
+  std::set<Thread*> childrenToJoin; //List of children to perform join()
 
-    unsigned int priority;            // Thread priority
+  unsigned int priority;            // Thread priority
 
-    int* stack; 	 		// Bottom of the stack 
-					// NULL if this is the main thread
-					// (If NULL, don't deallocate stack)
-    ThreadStatus status;		// ready, running or blocked
-    std::string name;
+  int* stack; 	 		// Bottom of the stack 
+  // NULL if this is the main thread
+  // (If NULL, don't deallocate stack)
+  ThreadStatus status;		// ready, running or blocked
+  std::string name;
 
-    void StackAllocate(VoidFunctionPtr func, int arg);
-    					// Allocate a stack for thread.
-					// Used internally by Fork()
+  void StackAllocate(VoidFunctionPtr func, int arg);
+  // Allocate a stack for thread.
+  // Used internally by Fork()
     
 
 #ifdef USER_PROGRAM
-// A thread running a user program actually has *two* sets of CPU registers -- 
-// one for its state while executing user code, one for its state 
-// while executing kernel code.
+  // A thread running a user program actually has *two* sets of CPU registers -- 
+  // one for its state while executing user code, one for its state 
+  // while executing kernel code.
 
-    int userRegisters[NumTotalRegs];	// user-level CPU register state
+  int userRegisters[NumTotalRegs];	// user-level CPU register state
 
-  public:
-    void SaveUserState();		// save user-level register state
-    void RestoreUserState();		// restore user-level register state
+public:
+  void SaveUserState();		// save user-level register state
+  void RestoreUserState();		// restore user-level register state
 
-    AddrSpace *space;			// User code this thread is running.
+  AddrSpace *space;			// User code this thread is running.
 #endif
 };
 
 // Magical machine-dependent routines, defined in switch.s
 
 extern "C" {
-// First frame on thread execution stack; 
-//   	enable interrupts
-//	call "func"
-//	(when func returns, if ever) call ThreadFinish()
-void _ThreadRoot();
+  // First frame on thread execution stack; 
+  //   	enable interrupts
+  //	call "func"
+  //	(when func returns, if ever) call ThreadFinish()
+  void _ThreadRoot();
 
-// Stop running oldThread and start running newThread
-void _SWITCH(Thread *oldThread, Thread *newThread);
+  // Stop running oldThread and start running newThread
+  void _SWITCH(Thread *oldThread, Thread *newThread);
 }
 
 #endif // THREAD_H

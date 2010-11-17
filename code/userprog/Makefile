@@ -111,15 +111,15 @@ main.o: ../threads/main.cc ../threads/copyright.h ../threads/utility.h \
  /usr/include/c++/4.4/bits/stl_bvector.h \
  /usr/include/c++/4.4/bits/vector.tcc \
  /usr/include/c++/4.4/bits/stl_heap.h \
- /usr/include/c++/4.4/bits/stl_queue.h ../machine/machine.h \
+ /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
+ /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
+ /usr/include/c++/4.4/bits/stl_multiset.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/disk.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/scheduler.h /usr/include/c++/4.4/algorithm \
  /usr/include/c++/4.4/bits/stl_algo.h /usr/include/c++/4.4/cstdlib \
  /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h /usr/include/c++/4.4/set \
- /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
- /usr/include/c++/4.4/bits/stl_multiset.h ../machine/interrupt.h \
+ /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h
 list.o: ../threads/list.cc ../threads/copyright.h ../threads/list.h \
  ../threads/utility.h ../machine/sysdep.h ../threads/copyright.h \
@@ -206,15 +206,15 @@ list.o: ../threads/list.cc ../threads/copyright.h ../threads/list.h \
  /usr/include/c++/4.4/bits/stl_bvector.h \
  /usr/include/c++/4.4/bits/vector.tcc \
  /usr/include/c++/4.4/bits/stl_heap.h \
- /usr/include/c++/4.4/bits/stl_queue.h ../machine/machine.h \
+ /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
+ /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
+ /usr/include/c++/4.4/bits/stl_multiset.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/disk.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/scheduler.h /usr/include/c++/4.4/algorithm \
  /usr/include/c++/4.4/bits/stl_algo.h /usr/include/c++/4.4/cstdlib \
  /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h /usr/include/c++/4.4/set \
- /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
- /usr/include/c++/4.4/bits/stl_multiset.h ../machine/interrupt.h \
+ /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h
 scheduler.o: ../threads/scheduler.cc ../threads/copyright.h \
  ../threads/scheduler.h ../threads/list.h ../threads/utility.h \
@@ -301,14 +301,14 @@ scheduler.o: ../threads/scheduler.cc ../threads/copyright.h \
  /usr/include/c++/4.4/bits/stl_bvector.h \
  /usr/include/c++/4.4/bits/vector.tcc \
  /usr/include/c++/4.4/bits/stl_heap.h \
- /usr/include/c++/4.4/bits/stl_queue.h ../machine/machine.h \
+ /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
+ /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
+ /usr/include/c++/4.4/bits/stl_multiset.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/disk.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  /usr/include/c++/4.4/algorithm /usr/include/c++/4.4/bits/stl_algo.h \
  /usr/include/c++/4.4/cstdlib /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h /usr/include/c++/4.4/set \
- /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
- /usr/include/c++/4.4/bits/stl_multiset.h ../threads/system.h \
+ /usr/include/c++/4.4/bits/stl_tempbuf.h ../threads/system.h \
  ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
  ../machine/timer.h
 synch.o: ../threads/synch.cc ../threads/copyright.h ../threads/synch.h \
@@ -396,14 +396,15 @@ synch.o: ../threads/synch.cc ../threads/copyright.h ../threads/synch.h \
  /usr/include/c++/4.4/bits/vector.tcc \
  /usr/include/c++/4.4/bits/stl_heap.h \
  /usr/include/c++/4.4/bits/stl_queue.h ../threads/system.h \
- ../threads/thread.h ../machine/machine.h ../threads/utility.h \
- ../machine/translate.h ../machine/disk.h ../userprog/addrspace.h \
- ../filesys/filesys.h ../filesys/openfile.h ../threads/scheduler.h \
- /usr/include/c++/4.4/algorithm /usr/include/c++/4.4/bits/stl_algo.h \
- /usr/include/c++/4.4/cstdlib /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h /usr/include/c++/4.4/set \
+ ../threads/thread.h /usr/include/c++/4.4/set \
  /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
- /usr/include/c++/4.4/bits/stl_multiset.h ../machine/interrupt.h \
+ /usr/include/c++/4.4/bits/stl_multiset.h ../machine/machine.h \
+ ../threads/utility.h ../machine/translate.h ../machine/disk.h \
+ ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
+ ../threads/scheduler.h /usr/include/c++/4.4/algorithm \
+ /usr/include/c++/4.4/bits/stl_algo.h /usr/include/c++/4.4/cstdlib \
+ /usr/include/c++/4.4/bits/algorithmfwd.h \
+ /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h
 synchlist.o: ../threads/synchlist.cc ../threads/copyright.h \
  ../threads/synchlist.h ../threads/list.h ../threads/utility.h \
@@ -575,15 +576,15 @@ system.o: ../threads/system.cc ../threads/copyright.h ../threads/system.h \
  /usr/include/c++/4.4/bits/stl_bvector.h \
  /usr/include/c++/4.4/bits/vector.tcc \
  /usr/include/c++/4.4/bits/stl_heap.h \
- /usr/include/c++/4.4/bits/stl_queue.h ../machine/machine.h \
+ /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
+ /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
+ /usr/include/c++/4.4/bits/stl_multiset.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/disk.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/scheduler.h /usr/include/c++/4.4/algorithm \
  /usr/include/c++/4.4/bits/stl_algo.h /usr/include/c++/4.4/cstdlib \
  /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h /usr/include/c++/4.4/set \
- /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
- /usr/include/c++/4.4/bits/stl_multiset.h ../machine/interrupt.h \
+ /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h
 thread.o: ../threads/thread.cc ../threads/copyright.h ../threads/thread.h \
  ../threads/utility.h ../machine/sysdep.h ../threads/copyright.h \
@@ -670,15 +671,15 @@ thread.o: ../threads/thread.cc ../threads/copyright.h ../threads/thread.h \
  /usr/include/c++/4.4/bits/stl_bvector.h \
  /usr/include/c++/4.4/bits/vector.tcc \
  /usr/include/c++/4.4/bits/stl_heap.h \
- /usr/include/c++/4.4/bits/stl_queue.h ../machine/machine.h \
+ /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
+ /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
+ /usr/include/c++/4.4/bits/stl_multiset.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/disk.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/switch.h ../threads/system.h ../threads/scheduler.h \
  /usr/include/c++/4.4/algorithm /usr/include/c++/4.4/bits/stl_algo.h \
  /usr/include/c++/4.4/cstdlib /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h /usr/include/c++/4.4/set \
- /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
- /usr/include/c++/4.4/bits/stl_multiset.h ../machine/interrupt.h \
+ /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h
 utility.o: ../threads/utility.cc ../threads/copyright.h \
  ../threads/utility.h ../machine/sysdep.h ../threads/copyright.h \
@@ -785,15 +786,15 @@ threadtest.o: ../threads/threadtest.cc ../threads/copyright.h \
  /usr/include/c++/4.4/bits/stl_bvector.h \
  /usr/include/c++/4.4/bits/vector.tcc \
  /usr/include/c++/4.4/bits/stl_heap.h \
- /usr/include/c++/4.4/bits/stl_queue.h ../machine/machine.h \
+ /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
+ /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
+ /usr/include/c++/4.4/bits/stl_multiset.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/disk.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/scheduler.h /usr/include/c++/4.4/algorithm \
  /usr/include/c++/4.4/bits/stl_algo.h /usr/include/c++/4.4/cstdlib \
  /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h /usr/include/c++/4.4/set \
- /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
- /usr/include/c++/4.4/bits/stl_multiset.h ../machine/interrupt.h \
+ /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h
 interrupt.o: ../machine/interrupt.cc ../threads/copyright.h \
  ../machine/interrupt.h ../threads/list.h ../threads/copyright.h \
@@ -880,15 +881,15 @@ interrupt.o: ../machine/interrupt.cc ../threads/copyright.h \
  /usr/include/c++/4.4/bits/stl_bvector.h \
  /usr/include/c++/4.4/bits/vector.tcc \
  /usr/include/c++/4.4/bits/stl_heap.h \
- /usr/include/c++/4.4/bits/stl_queue.h ../machine/machine.h \
+ /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
+ /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
+ /usr/include/c++/4.4/bits/stl_multiset.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/disk.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/scheduler.h /usr/include/c++/4.4/algorithm \
  /usr/include/c++/4.4/bits/stl_algo.h /usr/include/c++/4.4/cstdlib \
  /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h /usr/include/c++/4.4/set \
- /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
- /usr/include/c++/4.4/bits/stl_multiset.h ../machine/interrupt.h \
+ /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
  ../machine/stats.h ../machine/timer.h
 sysdep.o: ../machine/sysdep.cc ../threads/copyright.h \
  /usr/include/unistd.h /usr/include/features.h \
@@ -986,15 +987,15 @@ sysdep.o: ../machine/sysdep.cc ../threads/copyright.h \
  /usr/include/c++/4.4/bits/stl_bvector.h \
  /usr/include/c++/4.4/bits/vector.tcc \
  /usr/include/c++/4.4/bits/stl_heap.h \
- /usr/include/c++/4.4/bits/stl_queue.h ../machine/machine.h \
+ /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
+ /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
+ /usr/include/c++/4.4/bits/stl_multiset.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/disk.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/scheduler.h /usr/include/c++/4.4/algorithm \
  /usr/include/c++/4.4/bits/stl_algo.h /usr/include/c++/4.4/cstdlib \
  /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h /usr/include/c++/4.4/set \
- /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
- /usr/include/c++/4.4/bits/stl_multiset.h ../machine/interrupt.h \
+ /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
  ../machine/stats.h ../machine/timer.h
 stats.o: ../machine/stats.cc ../threads/copyright.h ../threads/utility.h \
  ../threads/copyright.h ../machine/sysdep.h /usr/include/stdlib.h \
@@ -1101,14 +1102,14 @@ timer.o: ../machine/timer.cc ../threads/copyright.h ../machine/timer.h \
  /usr/include/c++/4.4/bits/stl_bvector.h \
  /usr/include/c++/4.4/bits/vector.tcc \
  /usr/include/c++/4.4/bits/stl_heap.h \
- /usr/include/c++/4.4/bits/stl_queue.h ../machine/machine.h \
+ /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
+ /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
+ /usr/include/c++/4.4/bits/stl_multiset.h ../machine/machine.h \
  ../machine/translate.h ../machine/disk.h ../userprog/addrspace.h \
  ../filesys/filesys.h ../filesys/openfile.h ../threads/scheduler.h \
  /usr/include/c++/4.4/algorithm /usr/include/c++/4.4/bits/stl_algo.h \
  /usr/include/c++/4.4/cstdlib /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h /usr/include/c++/4.4/set \
- /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
- /usr/include/c++/4.4/bits/stl_multiset.h ../machine/interrupt.h \
+ /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h
 addrspace.o: ../userprog/addrspace.cc ../threads/copyright.h \
  ../threads/system.h ../threads/copyright.h ../threads/utility.h \
@@ -1195,15 +1196,15 @@ addrspace.o: ../userprog/addrspace.cc ../threads/copyright.h \
  /usr/include/c++/4.4/bits/stl_bvector.h \
  /usr/include/c++/4.4/bits/vector.tcc \
  /usr/include/c++/4.4/bits/stl_heap.h \
- /usr/include/c++/4.4/bits/stl_queue.h ../machine/machine.h \
+ /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
+ /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
+ /usr/include/c++/4.4/bits/stl_multiset.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/disk.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/scheduler.h /usr/include/c++/4.4/algorithm \
  /usr/include/c++/4.4/bits/stl_algo.h /usr/include/c++/4.4/cstdlib \
  /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h /usr/include/c++/4.4/set \
- /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
- /usr/include/c++/4.4/bits/stl_multiset.h ../machine/interrupt.h \
+ /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h \
  ../userprog/addrspace.h ../bin/noff.h
 bitmap.o: ../userprog/bitmap.cc ../threads/copyright.h \
@@ -1311,15 +1312,15 @@ exception.o: ../userprog/exception.cc ../threads/copyright.h \
  /usr/include/c++/4.4/bits/stl_bvector.h \
  /usr/include/c++/4.4/bits/vector.tcc \
  /usr/include/c++/4.4/bits/stl_heap.h \
- /usr/include/c++/4.4/bits/stl_queue.h ../machine/machine.h \
+ /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
+ /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
+ /usr/include/c++/4.4/bits/stl_multiset.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/disk.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/scheduler.h /usr/include/c++/4.4/algorithm \
  /usr/include/c++/4.4/bits/stl_algo.h /usr/include/c++/4.4/cstdlib \
  /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h /usr/include/c++/4.4/set \
- /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
- /usr/include/c++/4.4/bits/stl_multiset.h ../machine/interrupt.h \
+ /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h \
  ../userprog/syscall.h
 progtest.o: ../userprog/progtest.cc ../threads/copyright.h \
@@ -1407,15 +1408,15 @@ progtest.o: ../userprog/progtest.cc ../threads/copyright.h \
  /usr/include/c++/4.4/bits/stl_bvector.h \
  /usr/include/c++/4.4/bits/vector.tcc \
  /usr/include/c++/4.4/bits/stl_heap.h \
- /usr/include/c++/4.4/bits/stl_queue.h ../machine/machine.h \
+ /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
+ /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
+ /usr/include/c++/4.4/bits/stl_multiset.h ../machine/machine.h \
  ../threads/utility.h ../machine/translate.h ../machine/disk.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/scheduler.h /usr/include/c++/4.4/algorithm \
  /usr/include/c++/4.4/bits/stl_algo.h /usr/include/c++/4.4/cstdlib \
  /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h /usr/include/c++/4.4/set \
- /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
- /usr/include/c++/4.4/bits/stl_multiset.h ../machine/interrupt.h \
+ /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h \
  ../machine/console.h ../userprog/addrspace.h ../threads/synch.h
 console.o: ../machine/console.cc ../threads/copyright.h \
@@ -1504,14 +1505,14 @@ console.o: ../machine/console.cc ../threads/copyright.h \
  /usr/include/c++/4.4/bits/stl_bvector.h \
  /usr/include/c++/4.4/bits/vector.tcc \
  /usr/include/c++/4.4/bits/stl_heap.h \
- /usr/include/c++/4.4/bits/stl_queue.h ../machine/machine.h \
+ /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
+ /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
+ /usr/include/c++/4.4/bits/stl_multiset.h ../machine/machine.h \
  ../machine/translate.h ../machine/disk.h ../userprog/addrspace.h \
  ../filesys/filesys.h ../filesys/openfile.h ../threads/scheduler.h \
  /usr/include/c++/4.4/algorithm /usr/include/c++/4.4/bits/stl_algo.h \
  /usr/include/c++/4.4/cstdlib /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h /usr/include/c++/4.4/set \
- /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
- /usr/include/c++/4.4/bits/stl_multiset.h ../machine/interrupt.h \
+ /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h
 machine.o: ../machine/machine.cc ../threads/copyright.h \
  ../machine/machine.h ../threads/utility.h ../threads/copyright.h \
@@ -1599,14 +1600,14 @@ machine.o: ../machine/machine.cc ../threads/copyright.h \
  /usr/include/c++/4.4/bits/stl_bvector.h \
  /usr/include/c++/4.4/bits/vector.tcc \
  /usr/include/c++/4.4/bits/stl_heap.h \
- /usr/include/c++/4.4/bits/stl_queue.h ../machine/machine.h \
+ /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
+ /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
+ /usr/include/c++/4.4/bits/stl_multiset.h ../machine/machine.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/scheduler.h /usr/include/c++/4.4/algorithm \
  /usr/include/c++/4.4/bits/stl_algo.h /usr/include/c++/4.4/cstdlib \
  /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h /usr/include/c++/4.4/set \
- /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
- /usr/include/c++/4.4/bits/stl_multiset.h ../machine/interrupt.h \
+ /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h
 mipssim.o: ../machine/mipssim.cc ../threads/copyright.h \
  ../machine/machine.h ../threads/utility.h ../threads/copyright.h \
@@ -1695,14 +1696,14 @@ mipssim.o: ../machine/mipssim.cc ../threads/copyright.h \
  /usr/include/c++/4.4/bits/stl_bvector.h \
  /usr/include/c++/4.4/bits/vector.tcc \
  /usr/include/c++/4.4/bits/stl_heap.h \
- /usr/include/c++/4.4/bits/stl_queue.h ../machine/machine.h \
+ /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
+ /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
+ /usr/include/c++/4.4/bits/stl_multiset.h ../machine/machine.h \
  ../userprog/addrspace.h ../filesys/filesys.h ../filesys/openfile.h \
  ../threads/scheduler.h /usr/include/c++/4.4/algorithm \
  /usr/include/c++/4.4/bits/stl_algo.h /usr/include/c++/4.4/cstdlib \
  /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h /usr/include/c++/4.4/set \
- /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
- /usr/include/c++/4.4/bits/stl_multiset.h ../machine/interrupt.h \
+ /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h
 translate.o: ../machine/translate.cc ../threads/copyright.h \
  ../machine/machine.h ../threads/utility.h ../threads/copyright.h \
@@ -1791,13 +1792,13 @@ translate.o: ../machine/translate.cc ../threads/copyright.h \
  /usr/include/c++/4.4/bits/stl_bvector.h \
  /usr/include/c++/4.4/bits/vector.tcc \
  /usr/include/c++/4.4/bits/stl_heap.h \
- /usr/include/c++/4.4/bits/stl_queue.h ../machine/machine.h \
+ /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
+ /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
+ /usr/include/c++/4.4/bits/stl_multiset.h ../machine/machine.h \
  ../threads/scheduler.h /usr/include/c++/4.4/algorithm \
  /usr/include/c++/4.4/bits/stl_algo.h /usr/include/c++/4.4/cstdlib \
  /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h /usr/include/c++/4.4/set \
- /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
- /usr/include/c++/4.4/bits/stl_multiset.h ../machine/interrupt.h \
+ /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h
 # DEPENDENCIES MUST END AT END OF FILE
 # IF YOU PUT STUFF HERE IT WILL GO AWAY

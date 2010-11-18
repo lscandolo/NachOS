@@ -25,6 +25,7 @@
 #include "system.h"
 #include "syscall.h"
 
+int getArg(int num);
 //----------------------------------------------------------------------
 // ExceptionHandler
 // 	Entry point into the Nachos kernel.  Called when a user program
@@ -51,41 +52,67 @@
 void
 ExceptionHandler(ExceptionType which)
 {
-    int type = machine->ReadRegister(2);
+  int type = machine->ReadRegister(2);
+  int res;
 
-    if (which == SyscallException)
-      switch(type){
-      case SC_Halt:
-	DEBUG('a', "Shutdown, initiated by user program.\n");
-   	interrupt->Halt();
-	break;
-      case SC_Exit:
-	break;
-      case SC_Exec:
-	break;
-      case SC_Join:
-	break;
-      case SC_Create:
-	break;
-      case SC_Open:
-	break;
-      case SC_Read:
-	break;
-      case SC_Write:
-	break;
-      case SC_Close:
-	break;
-      case SC_Fork:
-	break;
-      case SC_Yield:
-	break;
-      default:
+  if (which == SyscallException){
+    switch(type){
+    case SC_Halt:
+      syscallHalt();
+      break;
+    case SC_Exit:
+      syscallExit(getArg(1));
+      break;
+    case SC_Exec:
+      break;
+    case SC_Join:
+      break;
+    case SC_Create:
+      syscallCreate((char*) getArg(1));
+      break;
+    case SC_Open:
+      res = (int) syscallOpen((char*) getArg(1));
+      //Set return value
+      machine->WriteRegister(2,res);
+      break;
+    case SC_Read:
+      res = (int) syscallRead((char*) getArg(1),getArg(2),getArg(3));
+      //Set return value
+      machine->WriteRegister(2,res);
+      break;
+    case SC_Write:
+      syscallWrite((char*) getArg(1),getArg(2),(OpenFileId) getArg(3));
+      break;
+    case SC_Close:
+      syscallClose((OpenFileId) getArg(1));
+      break;
+    case SC_Fork:
+      break;
+    case SC_Yield:
+      syscallYield();
+      break;
+    default:
       printf("Unexpected syscall code %d\n", type);
       ASSERT(FALSE);
-      }
-
-    else {
-      printf("Unexpected user mode exception %d %d\n", which, type);
-      ASSERT(FALSE);
     }
+      
+
+    //Advance Program counter
+    // int PrevPCRegVal = machine->ReadRegister(PrevPCReg);
+    int PCRegVal = machine->ReadRegister(PCReg);
+    int NextPCRegVal = machine->ReadRegister(NextPCReg);
+    
+    machine->WriteRegister(PrevPCReg, PCRegVal);
+    machine->WriteRegister(PCReg, NextPCRegVal);
+    machine->WriteRegister(NextPCReg, NextPCRegVal+4);
+  }
+
+  else {
+    printf("Unexpected user mode exception %d %d\n", which, type);
+    ASSERT(FALSE);
+  }
+}
+
+int getArg(int num){
+  return  machine->ReadRegister(3+num);
 }

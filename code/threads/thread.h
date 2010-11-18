@@ -114,8 +114,9 @@ class Thread {
     std::string getName() { return name; }
     void Print() { std::cout << name << ", "; }
 
-    void          setPriority(unsigned int new_priority);
+    void                 setPriority(unsigned int new_priority);
     unsigned int getPriority() const;
+    
    
   private:
     // some of the private data for this class is listed above
@@ -124,7 +125,6 @@ class Thread {
                                         // to call Join on this one
     Port* joinPort;                    // Port for Join
     
-
     unsigned int priority;            // Thread priority
 
     int* stack; 	 		// Bottom of the stack 
@@ -143,6 +143,7 @@ class Thread {
 // while executing kernel code.
 
     int userRegisters[NumTotalRegs];	// user-level CPU register state
+
 
   public:
     void SaveUserState();		// save user-level register state

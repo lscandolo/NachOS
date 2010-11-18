@@ -79,6 +79,8 @@ Thread::~Thread()
       delete joinPort;
 
 #ifdef USER_PROGRAM
+    if (space != NULL)
+      delete space;
     delete fdtable;
 #endif 
 }
@@ -187,7 +189,6 @@ Thread::Finish ()
       joinPort->Receive();
     }
     
-
     threadToBeDestroyed = currentThread;
     Sleep();					// invokes SWITCH
     // not reached
@@ -367,3 +368,4 @@ Thread::RestoreUserState()
 	machine->WriteRegister(i, userRegisters[i]);
 }
 #endif
+

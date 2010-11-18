@@ -15,7 +15,12 @@
 int
 main()
 {
-    Halt();
+  Yield();
+  Yield();
+  Yield();
+  Yield();
+  Exit(123);
+    /* Halt(); */
     /* not reached */
 }
 

@@ -34,7 +34,7 @@ Machine::Run()
 
     if(DebugIsEnabled('m'))
         printf("Starting thread \"%s\" at time %d\n",
-	       currentThread->getName(), stats->totalTicks);
+	       currentThread->getName().c_str(), stats->totalTicks);
     interrupt->setStatus(UserMode);
     for (;;) {
         OneInstruction(instr);

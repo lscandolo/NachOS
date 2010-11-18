@@ -56,7 +56,7 @@ typedef int SpaceId;
 /* Run the executable, stored in the Nachos file "name", and return the 
  * address space identifier
  */
-SpaceId syscallExec(char *name);
+SpaceId syscallExec(const char *name);
  
 /* Only return once the the user program "id" has finished.  
  * Return the exit status.
@@ -86,12 +86,12 @@ typedef int OpenFileId;
 #define ConsoleOutput	1  
  
 /* Create a Nachos file, with "name" */
-void syscallCreate(char *name);
+void syscallCreate(const char *name);
 
 /* Open the Nachos file "name", and return an "OpenFileId" that can 
  * be used to read and write to the file.
  */
-OpenFileId syscallOpen(char *name);
+OpenFileId syscallOpen(const char *name);
 
 /* Write "size" bytes from "buffer" to the open file. */
 void syscallWrite(char *buffer, int size, OpenFileId id);

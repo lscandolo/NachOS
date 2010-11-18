@@ -106,7 +106,7 @@ class Thread {
 						// relinquish the processor
     void Finish();  				// The thread is done executing
     
-    void Join();
+    int Join();
 
     void CheckOverflow();   			// Check if thread has 
 						// overflowed its stack

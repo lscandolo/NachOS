@@ -1348,7 +1348,8 @@ exception.o: ../userprog/exception.cc ../threads/copyright.h \
  /usr/include/c++/4.4/bits/stl_multiset.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h \
  ../machine/synchconsole.h ../machine/console.h ../threads/thread.h \
- ../threads/synch.h /usr/include/c++/4.4/bitset ../userprog/syscall.h
+ ../threads/synch.h /usr/include/c++/4.4/bitset ../userprog/syscall.h \
+ ../userprog/addrspace.h
 progtest.o: ../userprog/progtest.cc ../threads/copyright.h \
  ../threads/system.h ../threads/copyright.h ../threads/utility.h \
  ../machine/sysdep.h /usr/include/stdlib.h /usr/include/features.h \

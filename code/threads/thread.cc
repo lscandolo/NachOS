@@ -184,9 +184,15 @@ Thread::Finish ()
     
     DEBUG('t', "Finishing thread \"%s\"\n", getName().c_str());
     
+      int status = 0;
+
+#ifdef USER_PROGRAM
+      status = machine->ReadRegister(2);
+#endif
+
     if (isJoinable){
       DEBUG('t', "Thread \"%s\" waiting to be joined",getName().c_str());
-      joinPort->Receive();
+      joinPort->Send(status);
     }
     
     threadToBeDestroyed = currentThread;
@@ -198,9 +204,9 @@ Thread::Finish ()
 // Thread::Join
 //----------------------------------------------------------------------
 
-void Thread::Join(){
+int Thread::Join(){
   DEBUG('t',"Joining with thread \"%s\"",name.c_str());
-  joinPort->Send(1);
+  return joinPort->Receive();
 }
 
 //----------------------------------------------------------------------

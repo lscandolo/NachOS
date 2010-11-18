@@ -24,8 +24,14 @@
 #include "copyright.h"
 #include "system.h"
 #include "syscall.h"
+#include "addrspace.h"
+#include <string>
 
 int getArg(int num);
+bool readString(int virtAddr,std::string& str);
+bool readBuffer(int virtAddr, int size, char* buf);
+bool writeBuffer(char* buf, int size, int virtAddr);
+
 //----------------------------------------------------------------------
 // ExceptionHandler
 // 	Entry point into the Nachos kernel.  Called when a user program
@@ -54,43 +60,80 @@ ExceptionHandler(ExceptionType which)
 {
   int type = machine->ReadRegister(2);
   int res;
+  std::string arg;
+  char* buf;
 
   if (which == SyscallException){
     switch(type){
+
     case SC_Halt:
       syscallHalt();
       break;
+
     case SC_Exit:
+      machine->WriteRegister(2,getArg(1));
       syscallExit(getArg(1));
       break;
+
     case SC_Exec:
+      res = -1;
+      if (readString(getArg(1), arg))
+	res = syscallExec(arg.c_str());
+      machine->WriteRegister(2,res);
       break;
+
     case SC_Join:
+      res = syscallJoin((SpaceId)getArg(1));
+      machine->WriteRegister(2,res);
       break;
+
     case SC_Create:
-      syscallCreate((char*) getArg(1));
+      if (readString(getArg(1), arg))
+	syscallCreate(arg.c_str());
       break;
+
     case SC_Open:
-      res = (int) syscallOpen((char*) getArg(1));
-      //Set return value
+      if (readString(getArg(1), arg))
+	res = syscallOpen(arg.c_str());
+      else 
+	res = -1;
       machine->WriteRegister(2,res);
       break;
+
     case SC_Read:
-      res = (int) syscallRead((char*) getArg(1),getArg(2),getArg(3));
+      if (getArg(2) <= 0){
+	machine->WriteRegister(2,-1);
+	break;
+      }
+      buf = new char[getArg(2)];
+      res = (int) syscallRead(buf , getArg(2),getArg(3));
+      if (!writeBuffer(buf,res,getArg(1)))
+	res = -1;
       //Set return value
+      delete buf;
       machine->WriteRegister(2,res);
       break;
+
     case SC_Write:
-      syscallWrite((char*) getArg(1),getArg(2),(OpenFileId) getArg(3));
+      if (getArg(2) <= 0)
+	break;
+      buf = new char[getArg(2)];
+      if (readBuffer(getArg(1), getArg(2), buf))
+	syscallWrite(buf,getArg(2),(OpenFileId) getArg(3));
+      delete buf;
       break;
+
     case SC_Close:
       syscallClose((OpenFileId) getArg(1));
       break;
+
     case SC_Fork:
       break;
+
     case SC_Yield:
       syscallYield();
       break;
+
     default:
       printf("Unexpected syscall code %d\n", type);
       ASSERT(FALSE);
@@ -115,4 +158,38 @@ ExceptionHandler(ExceptionType which)
 
 int getArg(int num){
   return  machine->ReadRegister(3+num);
+}
+
+bool readString(int virtAddr,std::string& str){
+  str = std::string();
+
+  int c = 1;
+  bool res = true;
+
+  while (res  && c != '\0'){
+    res = machine->ReadMem(virtAddr,1,&c);
+    virtAddr++;
+    str += (char)c;
+  }
+
+  return res;
+}
+
+bool readBuffer(int virtAddr, int size, char* buf){
+  int rc;
+  for (int i = 0; i < size ; i++,virtAddr++){
+    if (!machine->ReadMem(virtAddr, 1, &rc))
+      return false;
+    buf[i] = rc;
+  }
+  return true;
+}
+
+
+bool writeBuffer(char* buf, int size, int virtAddr){
+  for (int i = 0; i < size ; i++,virtAddr++){
+    if (!machine->WriteMem(virtAddr, 1, buf[i]))
+      return false;
+  }
+  return true;
 }

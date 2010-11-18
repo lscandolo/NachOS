@@ -25,7 +25,7 @@ void        syscallExit(int status){
 }
 
 /////////////////////////Exec/////////////////////////
-SpaceId     syscallExec(char *name){
+SpaceId     syscallExec(const char *name){
   DEBUG('m', "Syscall Exec called with excutable file: %s\n",name);
 
   OpenFile* executable = fileSystem->Open(name);
@@ -48,18 +48,21 @@ SpaceId     syscallExec(char *name){
   return (SpaceId) child;
 }
 
-/////////////////////////Join/////////////////////////
+/////////////////////////Join////////////////////////////
 int         syscallJoin(SpaceId id){
-  
+  if (currentThread->isJoinableChild((Thread*) id))
+    return ((Thread*)id)->Join();
+  else
+    return -1;
 }
 
 /////////////////////////Create/////////////////////////
-void        syscallCreate(char *name){
+void        syscallCreate(const char *name){
   currentThread->fdtable->create(std::string(name));
 }
 
 /////////////////////////Open/////////////////////////
-OpenFileId syscallOpen(char *name){
+OpenFileId syscallOpen(const char *name){
   return currentThread->fdtable->open(std::string(name));
 }
 

@@ -43,12 +43,8 @@ class Scheduler {
     
   private:
 
-    typedef
-      std::multiset<Thread*, ThreadCompare>
-      readyList_t;
+    List* readyList;
 
-    readyList_t readyList; // queue of threads that are ready to run,
-                            // but not running
 };
 
 #endif // SCHEDULER_H

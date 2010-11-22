@@ -93,8 +93,27 @@ void PortTest(){
 //----------------------------------------------------------------------
 
 void
-Joiner(Thread *joinee)
+Joinee(int arg)
 {
+  int i;
+
+  for (i = 0; i < 5; i++) {
+    printf("Smell the roses.\n");
+    currentThread->Yield();
+  }
+
+  currentThread->Yield();
+  printf("Done smelling the roses!\n");
+  currentThread->Yield();
+}
+
+void
+Joiner(int arg)
+{
+
+  Thread *joinee = new Thread("joinee", true);  // WILL be joined
+  joinee->Fork((VoidFunctionPtr) Joinee, 0);
+
 
   currentThread->Yield();
   currentThread->Yield();
@@ -121,29 +140,12 @@ Joiner(Thread *joinee)
 }
 
 void
-Joinee()
-{
-  int i;
-
-  for (i = 0; i < 5; i++) {
-    printf("Smell the roses.\n");
-    currentThread->Yield();
-  }
-
-  currentThread->Yield();
-  printf("Done smelling the roses!\n");
-  currentThread->Yield();
-}
-
-void
 ForkerThread()
 {
-  Thread *joiner = new Thread("joiner", 0);  // will not be joined
-  Thread *joinee = new Thread("joinee", 1);  // WILL be joined
+  Thread *joiner = new Thread("joiner", false);  // will not be joined
 
   // fork off the two threads and let them do their business
-  joiner->Fork((VoidFunctionPtr) Joiner, (int) joinee);
-  joinee->Fork((VoidFunctionPtr) Joinee, 0);
+  joiner->Fork((VoidFunctionPtr) Joiner, 0);
 
   // this thread is done and can go on its merry way
   printf("Forked off the joiner and joinee threads.\n");

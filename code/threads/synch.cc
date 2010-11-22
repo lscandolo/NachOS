@@ -68,6 +68,7 @@ Semaphore::P()
     
     while (value == 0) { 			// semaphore not available
 	queue->Append((void *)currentThread);	// so go to sleep
+
 	currentThread->Sleep();
     } 
     value--; 					// semaphore available, 
@@ -110,15 +111,17 @@ Lock::~Lock() {
   delete sem;
 }
 void Lock::Acquire() {
-  unsigned int oldPriority = currentThread->getPriority();
-  currentThread->setPriority(0);
+  donatePriority(currentThread->getPriority());
+
   sem->P();
-  currentThread->setPriority(oldPriority);
+
+  originalHolderPriority = currentThread->getPriority();
   ownerThread = currentThread;
 }
 void Lock::Release() {
   if (isHeldByCurrentThread()){
     ownerThread = NULL;
+    currentThread->setPriority(originalHolderPriority);
     sem->V();
   }
   else{
@@ -130,34 +133,39 @@ bool Lock::isHeldByCurrentThread(){
   return currentThread == ownerThread;
 }
 
+void Lock::donatePriority(int p){
+  if (ownerThread != NULL)
+    if (ownerThread->getPriority() < p)
+      ownerThread->setPriority(p);
+}
+
+
 /////////////////////////// Condition ////////////////////////////////
 
 Condition::Condition(std::string debugName) {}
 Condition::~Condition() {}
 
 void Condition::Wait(Lock* conditionLock) {
-  threadQueue.push(currentThread);
-
-  IntStatus oldLevel = interrupt->SetLevel(IntOff);
+  conditionItem* ci = new conditionItem(currentThread);
+  threadQueue.push(ci);
 
   conditionLock->Release();
-  currentThread->Sleep();
+  ci->sem->P();
 
-  (void) interrupt->SetLevel(oldLevel);
-
+  delete ci;
   conditionLock->Acquire();
 }
 
 void Condition::Signal(Lock* conditionLock) {
   if (!threadQueue.empty()){
-    scheduler->ReadyToRun(threadQueue.front());
+    threadQueue.front()->sem->V();
     threadQueue.pop();
   }
 }
 
 void Condition::Broadcast(Lock* conditionLock) { 
   while (!threadQueue.empty()){
-    scheduler->ReadyToRun(threadQueue.front());
+    threadQueue.front()->sem->V();
     threadQueue.pop();
   }
 }

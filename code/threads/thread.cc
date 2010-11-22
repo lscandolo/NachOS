@@ -43,8 +43,10 @@ Thread::Thread(std::string threadName, bool joinable)
 {
     name = threadName;
     isJoinable = joinable;
-    if (isJoinable)
+    if (isJoinable){
       joinPort = new Port(std::string("joinPort_")+=threadName);
+      currentThread->addChildToJoin(this);
+    }
     priority = DEFAULT_PRIORITY;
     stackTop = NULL;
     stack = NULL;
@@ -83,6 +85,10 @@ Thread::~Thread()
       delete space;
     delete fdtable;
 #endif 
+
+    while(!childrenToJoin.empty())
+      (*childrenToJoin.begin())->Join();
+
 }
 
 //----------------------------------------------------------------------
@@ -201,12 +207,32 @@ Thread::Finish ()
 }
 
 //----------------------------------------------------------------------
-// Thread::Join
+// Thread::Join 
 //----------------------------------------------------------------------
 
 int Thread::Join(){
+  ASSERT(currentThread->isJoinableChild(this));
+  currentThread->removeChild(this);
   DEBUG('t',"Joining with thread \"%s\"",name.c_str());
   return joinPort->Receive();
+}
+
+//----------------------------------------------------------------------
+// Thread::isJoinableChild
+//----------------------------------------------------------------------
+
+bool Thread::isJoinableChild(Thread* t){
+  if (childrenToJoin.find(t) == childrenToJoin.end())
+    return false;
+  return true;
+}
+
+//----------------------------------------------------------------------
+// Thread::removeChild
+//----------------------------------------------------------------------
+
+void Thread::removeChild(Thread* t){
+  childrenToJoin.erase(t);
 }
 
 //----------------------------------------------------------------------

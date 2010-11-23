@@ -31,7 +31,10 @@ StartProcess(char *filename)
 	return;
     }
     space = new AddrSpace();    
-    space->Initialize(executable);    
+    if (!space->Initialize(executable)){
+      std::cout << "Error initializing address space." << std::endl;
+	return;
+    }
 
     currentThread->space = space;
 

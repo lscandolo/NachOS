@@ -30,8 +30,8 @@ SynchConsole::~SynchConsole(){
 
 void SynchConsole::put(char c){
   lock->Acquire();
-  writeDone->P();
   console->PutChar(c);
+  writeDone->P();
   lock->Release();
 }
 

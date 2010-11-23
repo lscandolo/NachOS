@@ -4,6 +4,7 @@
 #include "console.h"
 #include "thread.h"
 #include "synch.h"
+#include <iostream>
 #include <string>
 
 class SynchConsole {

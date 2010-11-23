@@ -15,10 +15,12 @@
 int
 main()
 {
-  Yield();
-  Yield();
-  Yield();
-  Yield();
+
+  Exec("test/halt2");
+
+  while(1)
+    Write("A",1,1);
+
   Exit(123);
     /* Halt(); */
     /* not reached */

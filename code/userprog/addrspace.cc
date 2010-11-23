@@ -20,6 +20,9 @@
 #include "addrspace.h"
 #include "noff.h"
 
+#define MIN(a,b)  (((a) < (b)) ? (a) : (b))
+#define MAX(a,b)  (((a) > (b)) ? (a) : (b))
+
 //----------------------------------------------------------------------
 // SwapHeader
 // 	Do little endian to big endian conversion on the bytes in the 
@@ -131,87 +134,66 @@ bool AddrSpace::Initialize(OpenFile *executable)
 	  noffH.code.virtualAddr,noffH.code.inFileAddr, noffH.code.size);
 
     int unusedInitialPages = noffH.code.virtualAddr / PageSize;
-    int initialOffset = noffH.code.virtualAddr%PageSize;
-
+    int initialOffset = noffH.code.virtualAddr % PageSize;
     int activePage = unusedInitialPages;
+    int charsRead      = 0;   
     int memoryOffset = pageTable[activePage].physicalPage * PageSize;
     memoryOffset +=  initialOffset;
-
     int fileReadPoint = noffH.code.inFileAddr;
-
-    int charsToRead  = 0;
-    int charsRead       = 0;   
-
-    charsToRead += PageSize - initialOffset;
-    charsRead += executable->ReadAt(machine->mainMemory + memoryOffset,
-				    PageSize - initialOffset,
-				    fileReadPoint);
+    int  charsToRead = MIN(noffH.code.size, PageSize-initialOffset); 
     
-    activePage++;
-    fileReadPoint += PageSize - initialOffset;
-    memoryOffset = pageTable[activePage].physicalPage * PageSize;
-    
-    int pagesToCopy = (noffH.code.size - initialOffset) / PageSize;
 
-    for(int i = 0; i < pagesToCopy; i++){
-      charsToRead += PageSize;
+    while (noffH.code.size > charsRead){
+
       charsRead += executable->ReadAt(machine->mainMemory + memoryOffset,
-				      PageSize,
+				      charsToRead,
 				      fileReadPoint);
       activePage++;
-      fileReadPoint += PageSize;
+      fileReadPoint = noffH.code.inFileAddr + charsRead;
       memoryOffset = pageTable[activePage].physicalPage * PageSize;
+
+      charsToRead = MIN(PageSize, noffH.code.size - charsRead);
     }
     
-    charsToRead += (noffH.code.size - initialOffset) % PageSize;
-    charsRead += executable->ReadAt(machine->mainMemory + memoryOffset,
-				    (noffH.code.size - initialOffset) % PageSize,
-				    fileReadPoint);
-
-    ///////// Copy in the data segment into memory /////////////////
-
-    DEBUG('a', "Initializing data segment. VirtAddr:  0x%x\t inFileAddr: 0x%x\t size 0x%x\n", 
-	  noffH.initData.virtualAddr,noffH.initData.inFileAddr, noffH.initData.size);
-
-    unusedInitialPages = noffH.initData.virtualAddr / PageSize;
-    initialOffset = noffH.initData.virtualAddr%PageSize;
-
-    activePage = unusedInitialPages;
-    memoryOffset = pageTable[activePage].physicalPage * PageSize;
-    memoryOffset +=  initialOffset;
-
-    fileReadPoint = noffH.initData.inFileAddr;
-
-    charsToRead += PageSize - initialOffset;
-    charsRead += executable->ReadAt(machine->mainMemory + memoryOffset,
-				    PageSize-initialOffset,
-				    fileReadPoint);
-    activePage++;
-    fileReadPoint += PageSize - initialOffset;
-    memoryOffset = pageTable[activePage].physicalPage * PageSize;
-    
-    pagesToCopy = (noffH.initData.size - initialOffset) / PageSize;
-
-    for(int i = 0; i < pagesToCopy; i++){
-      charsToRead += PageSize;
-      charsRead +=   executable->ReadAt(machine->mainMemory + memoryOffset,
-					PageSize,
-					fileReadPoint);
-      activePage++;
-      fileReadPoint += PageSize;
-      memoryOffset = pageTable[activePage].physicalPage * PageSize;
-    }
-    
-    charsToRead += (noffH.initData.size - initialOffset) % PageSize;
-    charsRead += executable->ReadAt(machine->mainMemory + memoryOffset,
-				    (noffH.initData.size - initialOffset) % PageSize,
-				    fileReadPoint);
-    
-    if (charsToRead != charsRead){
+    if (charsRead != noffH.code.size){
       std::cout << "Error: Couldn't load executable file." << std::endl;
       return false;
     }
 
+    ///////// Copy in the data segment into memory /////////////////
+
+    DEBUG('a', "Initializing data segment. VirtAddr:  0x%x\t inFileAddr: 0x%x\t size 0x%x\n", 
+    	  noffH.initData.virtualAddr,noffH.initData.inFileAddr, noffH.initData.size);
+
+    unusedInitialPages = noffH.initData.virtualAddr / PageSize;
+    initialOffset = noffH.initData.virtualAddr%PageSize;
+    activePage = unusedInitialPages;
+    charsRead       = 0;   
+    memoryOffset = pageTable[activePage].physicalPage * PageSize;
+    memoryOffset +=  initialOffset;
+    fileReadPoint = noffH.initData.inFileAddr;
+    charsToRead = MIN(noffH.initData.size, PageSize - initialOffset); 
+    
+
+    while (noffH.initData.size > charsRead){
+
+      charsRead += executable->ReadAt(machine->mainMemory + memoryOffset,
+				      charsToRead,
+				      fileReadPoint);
+      activePage++;
+      fileReadPoint = noffH.initData.inFileAddr + charsRead;
+      memoryOffset = pageTable[activePage].physicalPage * PageSize;
+
+      charsToRead = MIN(PageSize, noffH.initData.size - charsRead);
+    }
+
+    if (charsRead != noffH.initData.size){
+      std::cout << "Error: Couldn't load executable file." << std::endl;
+      return false;
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    
     for (i = 0; i < numPages; i++)
       usedVirtPages.set(pageTable[i].physicalPage,true);
 

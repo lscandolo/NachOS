@@ -118,8 +118,9 @@ ExceptionHandler(ExceptionType which)
       if (getArg(2) <= 0)
 	break;
       buf = new char[getArg(2)];
-      if (readBuffer(getArg(1), getArg(2), buf))
+      if (readBuffer(getArg(1), getArg(2), buf)){
 	syscallWrite(buf,getArg(2),(OpenFileId) getArg(3));
+      }
       delete buf;
       break;
 

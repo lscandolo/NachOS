@@ -42,6 +42,17 @@ PostOffice *postOffice;
 // void Cleanup();
 
 //----------------------------------------------------------------------
+// Preempt
+//      Nachos function called to do context 
+//----------------------------------------------------------------------
+
+void Preempt(int arg){
+    interrupt->Schedule((VoidFunctionPtr) Preempt, 0, UserSlice, TimerInt);
+    std::cout << "Preempting" << std::endl;
+    currentThread->Yield();
+}
+
+//----------------------------------------------------------------------
 // Cleanup
 // 	Nachos is halting.  De-allocate global data structures.
 //----------------------------------------------------------------------
@@ -184,6 +195,7 @@ Initialize(int argc, char **argv)
     machine = new Machine(debugUserProg);	  // this must come first
     synchConsole = new SynchConsole(NULL,NULL); // Console for user programs
     usedVirtPages.reset();
+    interrupt->Schedule((VoidFunctionPtr) Preempt, 0, UserSlice, TimerInt);
 #endif
 
 #ifdef FILESYS

@@ -105,11 +105,8 @@ main.o: ../threads/main.cc ../threads/copyright.h ../threads/utility.h \
  /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
  /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
  /usr/include/c++/4.4/bits/stl_multiset.h ../threads/scheduler.h \
- /usr/include/c++/4.4/algorithm /usr/include/c++/4.4/bits/stl_algo.h \
- /usr/include/c++/4.4/cstdlib /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
- ../threads/list.h ../machine/stats.h ../machine/timer.h \
- ../threads/utility.h
+ ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
+ ../machine/timer.h ../threads/utility.h
 list.o: ../threads/list.cc ../threads/copyright.h ../threads/list.h \
  ../threads/utility.h ../machine/sysdep.h ../threads/copyright.h \
  /usr/include/stdlib.h /usr/include/features.h \
@@ -198,11 +195,8 @@ list.o: ../threads/list.cc ../threads/copyright.h ../threads/list.h \
  /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
  /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
  /usr/include/c++/4.4/bits/stl_multiset.h ../threads/scheduler.h \
- /usr/include/c++/4.4/algorithm /usr/include/c++/4.4/bits/stl_algo.h \
- /usr/include/c++/4.4/cstdlib /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
- ../threads/list.h ../machine/stats.h ../machine/timer.h \
- ../threads/utility.h
+ ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
+ ../machine/timer.h ../threads/utility.h
 scheduler.o: ../threads/scheduler.cc ../threads/copyright.h \
  ../threads/scheduler.h ../threads/list.h ../threads/utility.h \
  ../machine/sysdep.h ../threads/copyright.h /usr/include/stdlib.h \
@@ -290,10 +284,7 @@ scheduler.o: ../threads/scheduler.cc ../threads/copyright.h \
  /usr/include/c++/4.4/bits/stl_heap.h \
  /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
  /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
- /usr/include/c++/4.4/bits/stl_multiset.h /usr/include/c++/4.4/algorithm \
- /usr/include/c++/4.4/bits/stl_algo.h /usr/include/c++/4.4/cstdlib \
- /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h ../threads/system.h \
+ /usr/include/c++/4.4/bits/stl_multiset.h ../threads/system.h \
  ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
  ../machine/timer.h ../threads/utility.h
 synch.o: ../threads/synch.cc ../threads/copyright.h ../threads/synch.h \
@@ -384,11 +375,8 @@ synch.o: ../threads/synch.cc ../threads/copyright.h ../threads/synch.h \
  ../threads/thread.h /usr/include/c++/4.4/set \
  /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
  /usr/include/c++/4.4/bits/stl_multiset.h ../threads/scheduler.h \
- /usr/include/c++/4.4/algorithm /usr/include/c++/4.4/bits/stl_algo.h \
- /usr/include/c++/4.4/cstdlib /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
- ../threads/list.h ../machine/stats.h ../machine/timer.h \
- ../threads/utility.h
+ ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
+ ../machine/timer.h ../threads/utility.h
 synchlist.o: ../threads/synchlist.cc ../threads/copyright.h \
  ../threads/synchlist.h ../threads/list.h ../threads/utility.h \
  ../machine/sysdep.h ../threads/copyright.h /usr/include/stdlib.h \
@@ -562,11 +550,8 @@ system.o: ../threads/system.cc ../threads/copyright.h ../threads/system.h \
  /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
  /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
  /usr/include/c++/4.4/bits/stl_multiset.h ../threads/scheduler.h \
- /usr/include/c++/4.4/algorithm /usr/include/c++/4.4/bits/stl_algo.h \
- /usr/include/c++/4.4/cstdlib /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
- ../threads/list.h ../machine/stats.h ../machine/timer.h \
- ../threads/utility.h
+ ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
+ ../machine/timer.h ../threads/utility.h
 thread.o: ../threads/thread.cc ../threads/copyright.h ../threads/thread.h \
  ../threads/utility.h ../machine/sysdep.h ../threads/copyright.h \
  /usr/include/stdlib.h /usr/include/features.h \
@@ -655,10 +640,7 @@ thread.o: ../threads/thread.cc ../threads/copyright.h ../threads/thread.h \
  /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
  /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
  /usr/include/c++/4.4/bits/stl_multiset.h ../threads/switch.h \
- ../threads/system.h ../threads/scheduler.h \
- /usr/include/c++/4.4/algorithm /usr/include/c++/4.4/bits/stl_algo.h \
- /usr/include/c++/4.4/cstdlib /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
+ ../threads/system.h ../threads/scheduler.h ../machine/interrupt.h \
  ../threads/list.h ../machine/stats.h ../machine/timer.h \
  ../threads/utility.h
 utility.o: ../threads/utility.cc ../threads/copyright.h \
@@ -769,11 +751,8 @@ threadtest.o: ../threads/threadtest.cc ../threads/copyright.h \
  /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
  /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
  /usr/include/c++/4.4/bits/stl_multiset.h ../threads/scheduler.h \
- /usr/include/c++/4.4/algorithm /usr/include/c++/4.4/bits/stl_algo.h \
- /usr/include/c++/4.4/cstdlib /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
- ../threads/list.h ../machine/stats.h ../machine/timer.h \
- ../threads/utility.h
+ ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
+ ../machine/timer.h ../threads/utility.h
 interrupt.o: ../machine/interrupt.cc ../threads/copyright.h \
  ../machine/interrupt.h ../threads/list.h ../threads/copyright.h \
  ../threads/utility.h ../machine/sysdep.h /usr/include/stdlib.h \
@@ -862,10 +841,8 @@ interrupt.o: ../machine/interrupt.cc ../threads/copyright.h \
  /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
  /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
  /usr/include/c++/4.4/bits/stl_multiset.h ../threads/scheduler.h \
- /usr/include/c++/4.4/algorithm /usr/include/c++/4.4/bits/stl_algo.h \
- /usr/include/c++/4.4/cstdlib /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
- ../machine/stats.h ../machine/timer.h ../threads/utility.h
+ ../machine/interrupt.h ../machine/stats.h ../machine/timer.h \
+ ../threads/utility.h
 sysdep.o: ../machine/sysdep.cc ../threads/copyright.h \
  /usr/include/unistd.h /usr/include/features.h \
  /usr/include/bits/predefs.h /usr/include/sys/cdefs.h \
@@ -965,10 +942,8 @@ sysdep.o: ../machine/sysdep.cc ../threads/copyright.h \
  /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
  /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
  /usr/include/c++/4.4/bits/stl_multiset.h ../threads/scheduler.h \
- /usr/include/c++/4.4/algorithm /usr/include/c++/4.4/bits/stl_algo.h \
- /usr/include/c++/4.4/cstdlib /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
- ../machine/stats.h ../machine/timer.h ../threads/utility.h
+ ../machine/interrupt.h ../machine/stats.h ../machine/timer.h \
+ ../threads/utility.h
 stats.o: ../machine/stats.cc ../threads/copyright.h ../threads/utility.h \
  ../threads/copyright.h ../machine/sysdep.h /usr/include/stdlib.h \
  /usr/include/features.h /usr/include/bits/predefs.h \
@@ -1077,10 +1052,8 @@ timer.o: ../machine/timer.cc ../threads/copyright.h ../machine/timer.h \
  /usr/include/c++/4.4/bits/stl_queue.h /usr/include/c++/4.4/set \
  /usr/include/c++/4.4/bits/stl_tree.h /usr/include/c++/4.4/bits/stl_set.h \
  /usr/include/c++/4.4/bits/stl_multiset.h ../threads/scheduler.h \
- /usr/include/c++/4.4/algorithm /usr/include/c++/4.4/bits/stl_algo.h \
- /usr/include/c++/4.4/cstdlib /usr/include/c++/4.4/bits/algorithmfwd.h \
- /usr/include/c++/4.4/bits/stl_tempbuf.h ../machine/interrupt.h \
- ../threads/list.h ../machine/stats.h ../machine/timer.h
+ ../machine/interrupt.h ../threads/list.h ../machine/stats.h \
+ ../machine/timer.h
 # DEPENDENCIES MUST END AT END OF FILE
 # IF YOU PUT STUFF HERE IT WILL GO AWAY
 # see make depend above

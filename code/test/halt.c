@@ -13,13 +13,13 @@
 #include "syscall.h"
 
 int
-main()
+main(int argc, char** argv)
 {
 
-  Exec("test/halt2");
+  Exec("test/halt2 sa sa sa sa   dsa    d dsa  as   ");
 
   while(1)
-    Write("A",1,1);
+      Write("A",1,1);
 
   Exit(123);
     /* Halt(); */

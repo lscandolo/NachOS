@@ -48,14 +48,14 @@ PostOffice *postOffice;
 
 void Preempt(int arg){
     interrupt->Schedule((VoidFunctionPtr) Preempt, 0, UserSlice, TimerInt);
-    std::cout << "Preempting" << std::endl;
-    currentThread->Yield();
+    interrupt->YieldOnReturn();
 }
 
 //----------------------------------------------------------------------
 // Cleanup
 // 	Nachos is halting.  De-allocate global data structures.
 //----------------------------------------------------------------------
+
 void
 Cleanup()
 {

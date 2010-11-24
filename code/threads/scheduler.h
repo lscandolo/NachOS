@@ -13,9 +13,6 @@
 #include "list.h"
 #include "thread.h"
 
-#include <algorithm>
-#include <set>
-
 /* typedef Thread* ThreadP; */
 
 class ThreadCompare{

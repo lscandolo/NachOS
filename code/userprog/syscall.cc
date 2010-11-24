@@ -1,8 +1,9 @@
+#include "system.h" //No poner syscall antes de system!!!!!
 #include "syscall.h"
-#include "fdtable.h"
-#include "system.h"
-#include "addrspace.h"
+
 #include <string>
+#include "fdtable.h"
+#include "addrspace.h"
 
 OpenFileId syscallOpen(char *name);
 
@@ -25,10 +26,11 @@ void        syscallExit(int status){
 }
 
 /////////////////////////Exec/////////////////////////
-SpaceId     syscallExec(const char *name){
-  DEBUG('m', "Syscall Exec called with excutable file: %s\n",name);
+SpaceId     syscallExec(int argc, char** argv){
 
-  OpenFile* executable = fileSystem->Open(name);
+  DEBUG('m', "Syscall Exec called with excutable file: %s\n",argv[0]);
+
+  OpenFile* executable = fileSystem->Open(argv[0]);
   if (executable == NULL)
     return -1;
 
@@ -40,7 +42,7 @@ SpaceId     syscallExec(const char *name){
     return -1;
   }
   
-  Thread* child = new Thread(std::string(name),true);
+  Thread* child = new Thread(std::string(argv[0]),true);
   child->space = space;
   child->Fork( (VoidFunctionPtr) threadRun, 0);
   

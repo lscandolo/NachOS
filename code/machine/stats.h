@@ -21,20 +21,20 @@
 
 class Statistics {
   public:
-    int totalTicks;      	// Total time running Nachos
-    int idleTicks;       	// Time spent idle (no threads to run)
-    int systemTicks;	 	// Time spent executing system code
-    int userTicks;       	// Time spent executing user code
+    unsigned long long totalTicks;      	// Total time running Nachos
+    unsigned long long idleTicks;       	// Time spent idle (no threads to run)
+    unsigned long long systemTicks;	 	// Time spent executing system code
+    unsigned long long userTicks;       	// Time spent executing user code
 				// (this is also equal to # of
 				// user instructions executed)
 
-    int numDiskReads;		// number of disk read requests
-    int numDiskWrites;		// number of disk write requests
-    int numConsoleCharsRead;	// number of characters read from the keyboard
-    int numConsoleCharsWritten; // number of characters written to the display
-    int numPageFaults;		// number of virtual memory page faults
-    int numPacketsSent;		// number of packets sent over the network
-    int numPacketsRecvd;	// number of packets received over the network
+    unsigned long long numDiskReads;		// number of disk read requests
+    unsigned long long numDiskWrites;		// number of disk write requests
+    unsigned long long numConsoleCharsRead;	// number of characters read from the keyboard
+    unsigned long long numConsoleCharsWritten; // number of characters written to the display
+    unsigned long long numPageFaults;		// number of virtual memory page faults
+    unsigned long long numPacketsSent;		// number of packets sent over the network
+    unsigned long long numPacketsRecvd;	// number of packets received over the network
 
     Statistics(); 		// initialize everything to zero
 
@@ -56,6 +56,6 @@ class Statistics {
 #define ConsoleTime 	100	// time to read or write one character
 #define NetworkTime 	100   	// time to send or receive one packet
 #define TimerTicks 	100    	// (average) time between timer interrupts
-#define UserSlice        500 //Ticks in user-level before context change
+#define UserSlice        5000 //Ticks in user-level before context change
 
 #endif // STATS_H

@@ -22,15 +22,19 @@
 // of liability and disclaimer of warranty provisions.
 
 #include "copyright.h"
-#include "system.h"
+#include "system.h" //Nunca poner system debajo de syscall!!
 #include "syscall.h"
 #include "addrspace.h"
 #include <string>
+#include <sstream>
+#include <vector>
 
 int getArg(int num);
 bool readString(int virtAddr,std::string& str);
 bool readBuffer(int virtAddr, int size, char* buf);
 bool writeBuffer(char* buf, int size, int virtAddr);
+int tokenize(std::string str, char **&tokens);
+void deleteTokens(char **tokens, int argc);
 
 //----------------------------------------------------------------------
 // ExceptionHandler
@@ -61,7 +65,9 @@ ExceptionHandler(ExceptionType which)
   int type = machine->ReadRegister(2);
   int res;
   std::string arg;
-  char* buf;
+  char* buf = NULL;
+  char **argv;
+  int argc;
 
   if (which == SyscallException){
     switch(type){
@@ -77,8 +83,11 @@ ExceptionHandler(ExceptionType which)
 
     case SC_Exec:
       res = -1;
-      if (readString(getArg(1), arg))
-	res = syscallExec(arg.c_str());
+      if (readString(getArg(1), arg)){
+	argc = tokenize(arg, argv);
+	res = syscallExec(argc, argv);
+	deleteTokens(argv, argc);
+      }
       machine->WriteRegister(2,res);
       break;
 
@@ -194,3 +203,41 @@ bool writeBuffer(char* buf, int size, int virtAddr){
   }
   return true;
 }
+
+std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
+    std::stringstream ss(s);
+    std::string item;
+    while(std::getline(ss, item, delim)) {
+      if (!item.empty() && item[0] != '\0')
+        elems.push_back(item);
+    }
+    return elems;
+}
+
+
+std::vector<std::string> split(const std::string &s, char delim) {
+    std::vector<std::string> elems;
+    return split(s, delim, elems);
+}
+
+
+// std::vector<std::string> tokenize(std::string str){
+//   return split(str, ' ');
+// }
+
+int tokenize(std::string str, char **& tokens){
+  std::vector<std::string> tks = split(str, ' ');
+  tokens = new char*[tks.size()];
+  for (int i = 0; i < tks.size(); i++){
+    tokens[i] = new char[tks[i].size()+1];
+    strcpy(tokens[i], tks[i].c_str());
+  }
+  return tks.size();
+}
+
+void deleteTokens(char **tokens, int argc){
+  for (int i = 0; i < argc; i++)
+    delete[] tokens[i];
+  delete[] tokens;
+}
+ 

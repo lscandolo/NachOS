@@ -23,8 +23,8 @@
 #define SC_Exec		2
 #define SC_Join		3
 #define SC_Create	4
-#define SC_Open		5
-#define SC_Read		6
+#define SC_Open	5
+#define SC_Read	6
 #define SC_Write	7
 #define SC_Close	8
 #define SC_Fork		9
@@ -56,8 +56,8 @@ typedef int SpaceId;
 /* Run the executable, stored in the Nachos file "name", and return the 
  * address space identifier
  */
-SpaceId syscallExec(const char *name);
- 
+SpaceId syscallExec(int argc, char** argv);
+
 /* Only return once the the user program "id" has finished.  
  * Return the exit status.
  */

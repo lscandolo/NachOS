@@ -126,7 +126,7 @@ private:
     
   Port* joinPort;                    // Port for Join
   unsigned int priority;            // Thread priority
-    int* stack; 	 		// Bottom of the stack 
+  int* stack; 	 		// Bottom of the stack 
 					// NULL if this is the main thread
 					// (If NULL, don't deallocate stack)
   ThreadStatus status;		// ready, running or blocked

@@ -5,11 +5,35 @@
 #include "fdtable.h"
 #include "addrspace.h"
 
+struct Args{
+  int argc;
+  char** argv;
+  int userSpaceArgv;
+};
+
 OpenFileId syscallOpen(char *name);
 
-void threadRun(int arg){
+void deleteArgs(int argc, char **tokens){
+  for (int i = 0; i < argc; i++)
+    delete[] tokens[i];
+  delete[] tokens;
+}
+
+void threadRun(int argPtr){
   currentThread->space->InitRegisters();		// set the initial register values
   currentThread->space->RestoreState();		// load page table register
+
+  Args* userSpaceArgs = (Args*) argPtr;
+
+  currentThread->space->copyArguments(userSpaceArgs->argc,
+				                                             userSpaceArgs->argv,
+				                                             userSpaceArgs->userSpaceArgv);
+
+  machine->WriteRegister(4,userSpaceArgs->argc);
+  machine->WriteRegister(5,userSpaceArgs->userSpaceArgv);
+
+  deleteArgs(userSpaceArgs->argc,userSpaceArgs->argv);
+  
   machine->Run();
 }
 
@@ -27,24 +51,33 @@ void        syscallExit(int status){
 
 /////////////////////////Exec/////////////////////////
 SpaceId     syscallExec(int argc, char** argv){
-
   DEBUG('m', "Syscall Exec called with excutable file: %s\n",argv[0]);
 
   OpenFile* executable = fileSystem->Open(argv[0]);
-  if (executable == NULL)
+  if (executable == NULL){
+    deleteArgs(argc,argv);
     return -1;
+  }
 
   AddrSpace* space = new AddrSpace();
 
-  if (!space->Initialize(executable)){
+  Args* userSpaceArgs = new Args;
+  int userSpaceArgv;
+  
+  if (!space->Initialize(executable, argc, argv, &userSpaceArgv)){
     delete executable;
+    deleteArgs(argc,argv);
     delete space;
     return -1;
   }
+
+  userSpaceArgs->argc = argc;
+  userSpaceArgs->argv = argv;
+  userSpaceArgs->userSpaceArgv = userSpaceArgv;
   
   Thread* child = new Thread(std::string(argv[0]),true);
   child->space = space;
-  child->Fork( (VoidFunctionPtr) threadRun, 0);
+  child->Fork( (VoidFunctionPtr) threadRun, (int)userSpaceArgs);
   
   delete executable;
   return (SpaceId) child;
@@ -86,8 +119,9 @@ void        syscallWrite(char *buffer, int size, OpenFileId id){
 /////////////////////////Read/////////////////////////
 int         syscallRead(char *buffer, int size, OpenFileId id){
   FileDescriptor descriptor = currentThread->fdtable->getDescriptor(id);
-  if (descriptor.status == unused || descriptor.mode == w)
+  if (descriptor.status == unused || descriptor.mode == w){
     return 0;
+  }
 
   if (descriptor.type == file){
     return descriptor.file->Read(buffer,size);
@@ -97,6 +131,7 @@ int         syscallRead(char *buffer, int size, OpenFileId id){
     synchConsole->readStr(buffer,size);
     return size;
   }
+
 }
 
 /////////////////////////Close/////////////////////////
@@ -112,3 +147,4 @@ void        syscallFork(void (*func)()){
 void        syscallYield(){
   currentThread->Yield();
 }
+

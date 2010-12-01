@@ -47,8 +47,8 @@ PostOffice *postOffice;
 //----------------------------------------------------------------------
 
 void Preempt(int arg){
-    interrupt->Schedule((VoidFunctionPtr) Preempt, 0, UserSlice, TimerInt);
-    interrupt->YieldOnReturn();
+  interrupt->Schedule((VoidFunctionPtr) Preempt, 0, UserSlice, TimerInt);
+  interrupt->YieldOnReturn();
 }
 
 //----------------------------------------------------------------------

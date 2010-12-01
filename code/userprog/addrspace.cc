@@ -23,6 +23,8 @@
 #define MIN(a,b)  (((a) < (b)) ? (a) : (b))
 #define MAX(a,b)  (((a) > (b)) ? (a) : (b))
 
+bool writeArgBuffer(char* buf, int size, int virtAddr);
+
 //----------------------------------------------------------------------
 // SwapHeader
 // 	Do little endian to big endian conversion on the bytes in the 
@@ -60,12 +62,18 @@ SwapHeader (NoffHeader *noffH)
 //	"executable" is the file containing the object code to load into memory
 //----------------------------------------------------------------------
 
-bool AddrSpace::Initialize(OpenFile *executable)
+bool AddrSpace::Initialize(OpenFile *executable, int argc, char** argv,  int* userSpaceArgv)
 {
 
     NoffHeader noffH;
     unsigned int i, size;
 
+    int argSize = argc * sizeof(char*); //Asumimos q es lo mismo en el comp cruzado
+    for (int j = 0; j < argc; j++){
+      argSize += strlen(argv[j])+1;
+    }
+
+    DEBUG('a', "Address space argument size: %d\n", argSize);
 
     executable->ReadAt((char *)&noffH, sizeof(noffH), 0);
     if ((noffH.noffMagic != NOFFMAGIC) && 
@@ -75,17 +83,14 @@ bool AddrSpace::Initialize(OpenFile *executable)
     if (noffH.noffMagic != NOFFMAGIC)
       return false;
 
-    // printf(".text-> VirtAddr:  0x%x\t inFileAddr: 0x%x\t size 0x%x\n", 
-    // 	  noffH.code.virtualAddr,noffH.code.inFileAddr, noffH.code.size);
-    // printf(".data-> VirtAddr:  0x%x\t inFileAddr: 0x%x\t size 0x%x\n", 
-    // 	  noffH.initData.virtualAddr,noffH.initData.inFileAddr, noffH.initData.size);
-    // printf(".bss-> VirtAddr:  0x%x\t inFileAddr: 0x%x\t size 0x%x\n", 
-    // 	  noffH.uninitData.virtualAddr,noffH.uninitData.inFileAddr, noffH.uninitData.size);
-
     // how big is the address space?
     size = noffH.code.size + noffH.initData.size + noffH.uninitData.size 
-			+ UserStackSize;	// we need to increase the size
-						// to leave room for the stack
+			+ UserStackSize + argSize;
+    // we need to increase the size
+    // to leave room for the stack and the arguments
+
+    size += 4; //This is to make sure we can write the args starting at an 4-aligned address
+
     numPages = divRoundUp(size, PageSize);
     size = numPages * PageSize;
 
@@ -197,7 +202,48 @@ bool AddrSpace::Initialize(OpenFile *executable)
     for (i = 0; i < numPages; i++)
       usedVirtPages.set(pageTable[i].physicalPage,true);
 
+    int initialArgAddress = divRoundUp(size - UserStackSize - argSize, 4)*4; //To make sure it's aligned
+
+    if (userSpaceArgv != NULL)
+      *userSpaceArgv = initialArgAddress;
+
     return true;
+}
+
+    //Copy args into user space
+void AddrSpace::copyArguments(int argc, char** argv, int initialArgAddress)
+{
+
+    int argSize = argc * sizeof(char*); //Asumimos q es lo mismo en el comp cruzado
+    for (int j = 0; j < argc; j++){
+      argSize += strlen(argv[j])+1;
+    }
+
+    char* argBuffer = new char[argSize];
+    
+    int pointerOffset = 0;
+    int dataOffset = pointerOffset + argc * sizeof(char*);
+
+    for (int j = 0 ; j < argc ; j++){
+      
+      *((int*)(argBuffer + pointerOffset)) = initialArgAddress + dataOffset;
+      strcpy(argBuffer + dataOffset, argv[j]);
+      
+      pointerOffset += sizeof(char*);
+      dataOffset += strlen(argv[j]) + 1;
+    }
+
+    // for (int i = 0; i < argc; i++)
+    //   printf("\n%d",((int*)argBuffer)[i]);
+
+    // for (int i = argc*4; i < argSize; i++)
+    //   printf("\n%c",argBuffer[i]);
+
+    // exit(0);
+
+    writeArgBuffer(argBuffer, argSize, initialArgAddress);
+
+    delete argBuffer;
 }
 
 //----------------------------------------------------------------------
@@ -274,4 +320,12 @@ void AddrSpace::RestoreState()
 {
   machine->pageTable = pageTable;
   machine->pageTableSize = numPages;
+}
+
+bool writeArgBuffer(char* buf, int size, int virtAddr){
+  for (int i = 0; i < size ; i++,virtAddr++){
+    if (!machine->WriteMem(virtAddr, 1, buf[i]))
+      return false;
+  }
+  return true;
 }

@@ -23,7 +23,6 @@
 #include "system.h"
 #include "thread.h"
 
-
 //----------------------------------------------------------------------
 // Scheduler::Scheduler
 // 	Initialize the list of ready but not running threads to empty.
@@ -77,6 +76,7 @@ Scheduler::FindNextToRun ()
     return NULL;
 
   Thread* next = (Thread*) readyList->SortedRemove(NULL);
+
   return next;
 }
 
@@ -132,6 +132,7 @@ Scheduler::Run (Thread *nextThread)
         delete threadToBeDestroyed;
 	threadToBeDestroyed = NULL;
     }
+
     
 #ifdef USER_PROGRAM
     if (currentThread->space != NULL) {		// if there is an address space
@@ -139,6 +140,7 @@ Scheduler::Run (Thread *nextThread)
 	currentThread->space->RestoreState();
     }
 #endif
+
 }
 
 //----------------------------------------------------------------------
@@ -151,6 +153,5 @@ void
 Scheduler::Print()
 {
     printf("Ready list contents:\n");
-    
     readyList->Mapcar((VoidFunctionPtr) ThreadPrint);
 }

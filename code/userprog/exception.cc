@@ -34,7 +34,7 @@ bool readString(int virtAddr,std::string& str);
 bool readBuffer(int virtAddr, int size, char* buf);
 bool writeBuffer(char* buf, int size, int virtAddr);
 int tokenize(std::string str, char **&tokens);
-void deleteTokens(char **tokens, int argc);
+void deleteTokens(int argc, char **tokens);
 
 //----------------------------------------------------------------------
 // ExceptionHandler
@@ -86,7 +86,7 @@ ExceptionHandler(ExceptionType which)
       if (readString(getArg(1), arg)){
 	argc = tokenize(arg, argv);
 	res = syscallExec(argc, argv);
-	deleteTokens(argv, argc);
+	// deleteTokens(argc, argv); //We free this from the new thread
       }
       machine->WriteRegister(2,res);
       break;
@@ -115,7 +115,7 @@ ExceptionHandler(ExceptionType which)
 	break;
       }
       buf = new char[getArg(2)];
-      res = (int) syscallRead(buf , getArg(2),getArg(3));
+      res = (int) syscallRead(buf , getArg(2),(OpenFileId) getArg(3));
       if (!writeBuffer(buf,res,getArg(1)))
 	res = -1;
       //Set return value
@@ -235,9 +235,3 @@ int tokenize(std::string str, char **& tokens){
   return tks.size();
 }
 
-void deleteTokens(char **tokens, int argc){
-  for (int i = 0; i < argc; i++)
-    delete[] tokens[i];
-  delete[] tokens;
-}
- 

@@ -103,6 +103,7 @@ Semaphore::V()
 // the test case in the network assignment won't work!
 Lock::Lock(std::string debugName) {
   name.assign(debugName);
+  ownerThread = NULL;
   std::string semName("Semaphore_");
   name.append(semName);
   sem = new Semaphore(semName,1);
@@ -152,8 +153,8 @@ void Condition::Wait(Lock* conditionLock) {
   conditionLock->Release();
   ci->sem->P();
 
-  delete ci;
   conditionLock->Acquire();
+  delete ci;
 }
 
 void Condition::Signal(Lock* conditionLock) {
@@ -179,6 +180,7 @@ Port::Port(std::string debugName){
   lock = new Lock(std::string("lock_")+=debugName);
   bufferEmpty = true;
   receivers = senders = 0;
+  name = debugName;
 }
 Port::~Port(){
   delete lock;
@@ -187,12 +189,14 @@ Port::~Port(){
 }
 
 void Port::Send(int msg){
+
   lock->Acquire();
 
   senders++;
 
-  while (receivers == 0 || !bufferEmpty)
+  while (receivers == 0 || !bufferEmpty){
     senderCondition->Wait(lock);
+  }
 
   buffer = msg;  bufferEmpty = false;
   senders--;
@@ -210,6 +214,7 @@ int Port::Receive(){
   while (bufferEmpty){
     if (senders > 0)
       senderCondition->Signal(lock);
+
     receiverCondition->Wait(lock);
   }
   

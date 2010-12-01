@@ -24,7 +24,10 @@ class AddrSpace {
   AddrSpace(){pageTable = NULL;}
   ~AddrSpace();			// De-allocate an address space
 
-  bool Initialize(OpenFile *executable);
+  bool Initialize(OpenFile *executable, 
+		  int argc = 0, 
+		  char** argv = NULL,  
+		  int* userSpaceArgv = NULL);
   // Create an address space,
   // initializing it with the program
   // stored in the file "executable"
@@ -34,6 +37,9 @@ class AddrSpace {
 
   void SaveState();			// Save/restore address space-specific
   void RestoreState();		// info on a context switch 
+
+  //Copy initial arguments into address space
+  void copyArguments(int argc, char** argv, int initialArgAddress);
 
  private:
   TranslationEntry *pageTable;	// Assume linear page table translation

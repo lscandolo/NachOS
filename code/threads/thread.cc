@@ -77,17 +77,14 @@ Thread::~Thread()
     if (stack != NULL)
 	DeallocBoundedArray((char *) stack, StackSize * sizeof(int));
 
-    if (isJoinable)
-      delete joinPort;
+    // if (isJoinable) //The joiner deletes it
+    //   delete joinPort;
 
 #ifdef USER_PROGRAM
     if (space != NULL)
       delete space;
     delete fdtable;
 #endif 
-
-    while(!childrenToJoin.empty())
-      (*childrenToJoin.begin())->Join();
 
 }
 
@@ -196,12 +193,17 @@ Thread::Finish ()
       status = machine->ReadRegister(2);
 #endif
 
+      while(!childrenToJoin.empty()){
+	(*childrenToJoin.begin())->Join();
+      }
+
     if (isJoinable){
-      DEBUG('t', "Thread \"%s\" waiting to be joined",getName().c_str());
+      DEBUG('t', "Thread \"%s\" waiting to be joined\n",getName().c_str());
       joinPort->Send(status);
     }
     
     threadToBeDestroyed = currentThread;
+
     Sleep();					// invokes SWITCH
     // not reached
 }
@@ -212,9 +214,15 @@ Thread::Finish ()
 
 int Thread::Join(){
   ASSERT(currentThread->isJoinableChild(this));
+  
   currentThread->removeChild(this);
+
   DEBUG('t',"Joining with thread \"%s\"",name.c_str());
-  return joinPort->Receive();
+
+  int status = joinPort->Receive();
+  delete joinPort; //To ensure no memory leaks
+
+  return status;
 }
 
 //----------------------------------------------------------------------
@@ -305,6 +313,7 @@ Thread::Sleep ()
 	interrupt->Idle();	// no one to run, wait for an interrupt
         
     scheduler->Run(nextThread); // returns when we've been signalled
+
 }
 
 //----------------------------------------------------------------------

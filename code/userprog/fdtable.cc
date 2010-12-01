@@ -10,7 +10,7 @@ FDTable::FDTable(){
   stdout.type = console;
 
   stdin.mode = r;
-  stdin.mode = w;
+  stdout.mode = w;
 
   stdin.status = used;
   stdout.status = used;
@@ -54,7 +54,11 @@ FDTable::close(OpenFileId id){
   if (table[id].status == unused)
     return false;
 
-  delete table[id].file;
+  if (table[id].file != NULL && table[id].type != console)
+    delete table[id].file;
+
+  table[id].status = unused;
+
   return true;
 }
 
@@ -73,7 +77,7 @@ int
 FDTable::getUnusedDescriptor(){
   int i;
   for (i = 0 ; i < table.size(); i++)
-    if (table[i].status = unused) break;
+    if (table[i].status == unused) break;
 
   if (i < table.size())
     return i;

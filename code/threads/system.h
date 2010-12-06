@@ -38,6 +38,10 @@ extern SynchConsole* synchConsole;            // The synchronised console
 extern std::bitset<NumVirtPages> usedVirtPages;
 #endif
 
+#ifdef USE_TLB
+
+#endif
+
 #ifdef FILESYS_NEEDED 		// FILESYS or FILESYS_STUB 
 #include "filesys.h"
 extern FileSystem  *fileSystem;

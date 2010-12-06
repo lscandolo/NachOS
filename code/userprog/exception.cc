@@ -35,6 +35,7 @@ bool readBuffer(int virtAddr, int size, char* buf);
 bool writeBuffer(char* buf, int size, int virtAddr);
 int tokenize(std::string str, char **&tokens);
 void deleteTokens(int argc, char **tokens);
+void SyscallHandler(int type);
 
 //----------------------------------------------------------------------
 // ExceptionHandler
@@ -62,92 +63,132 @@ void deleteTokens(int argc, char **tokens);
 void
 ExceptionHandler(ExceptionType which)
 {
-  int type = machine->ReadRegister(2);
+
+  switch(which){
+
+  case(SyscallException):      // A program executed a system call.
+    SyscallHandler(machine->ReadRegister(2));
+    break;
+  case(NoException): // Everything ok!
+    break;
+  case(PageFaultException):    // No valid translation found
+    printf("Unexpected Exception type: %d",which);
+    ASSERT(FALSE);
+    break;
+  case(ReadOnlyException):     // Write attempted to page marked "read-only"
+    printf("Unexpected Exception type: %d",which);
+    ASSERT(FALSE);
+    break;
+  case(BusErrorException):     // Translation resulted in an invalid physical address
+    printf("Unexpected Exception type: %d",which);
+    ASSERT(FALSE);
+    break;
+  case(AddressErrorException): // Unaligned reference or one that
+                					    // was beyond the end of the
+		                			    // address space
+    printf("Unexpected Exception type: %d",which);
+    ASSERT(FALSE);
+    break;
+  case(OverflowException):     // Integer overflow in add or sub.
+    printf("Unexpected Exception type: %d",which);
+    ASSERT(FALSE);
+    break;
+  case(IllegalInstrException): // Unimplemented or reserved instr.
+    printf("Unexpected Exception type: %d",which);
+    ASSERT(FALSE);
+    break;
+  default:
+    printf("Unexpected Exception type: %d",which);
+    ASSERT(FALSE);
+  }
+
+}
+
+void SyscallHandler(int type){
+
   int res;
   std::string arg;
   char* buf = NULL;
   char **argv;
   int argc;
 
-  if (which == SyscallException){
-    switch(type){
+  switch(type){
+  case SC_Halt:
+    syscallHalt();
+    break;
 
-    case SC_Halt:
-      syscallHalt();
-      break;
+  case SC_Exit:
+    machine->WriteRegister(2,getArg(1));
+    syscallExit(getArg(1));
+    break;
 
-    case SC_Exit:
-      machine->WriteRegister(2,getArg(1));
-      syscallExit(getArg(1));
-      break;
-
-    case SC_Exec:
-      res = -1;
-      if (readString(getArg(1), arg)){
-	argc = tokenize(arg, argv);
-	res = syscallExec(argc, argv);
-	// deleteTokens(argc, argv); //We free this from the new thread
-      }
-      machine->WriteRegister(2,res);
-      break;
-
-    case SC_Join:
-      res = syscallJoin((SpaceId)getArg(1));
-      machine->WriteRegister(2,res);
-      break;
-
-    case SC_Create:
-      if (readString(getArg(1), arg))
-	syscallCreate(arg.c_str());
-      break;
-
-    case SC_Open:
-      if (readString(getArg(1), arg))
-	res = syscallOpen(arg.c_str());
-      else 
-	res = -1;
-      machine->WriteRegister(2,res);
-      break;
-
-    case SC_Read:
-      if (getArg(2) <= 0){
-	machine->WriteRegister(2,-1);
-	break;
-      }
-      buf = new char[getArg(2)];
-      res = (int) syscallRead(buf , getArg(2),(OpenFileId) getArg(3));
-      if (!writeBuffer(buf,res,getArg(1)))
-	res = -1;
-      //Set return value
-      delete buf;
-      machine->WriteRegister(2,res);
-      break;
-
-    case SC_Write:
-      if (getArg(2) <= 0)
-	break;
-      buf = new char[getArg(2)];
-      if (readBuffer(getArg(1), getArg(2), buf)){
-	syscallWrite(buf,getArg(2),(OpenFileId) getArg(3));
-      }
-      delete buf;
-      break;
-
-    case SC_Close:
-      syscallClose((OpenFileId) getArg(1));
-      break;
-
-    case SC_Fork:
-      break;
-
-    case SC_Yield:
-      syscallYield();
-      break;
-
-    default:
-      printf("Unexpected syscall code %d\n", type);
-      ASSERT(FALSE);
+  case SC_Exec:
+    res = -1;
+    if (readString(getArg(1), arg)){
+      argc = tokenize(arg, argv);
+      res = syscallExec(argc, argv);
+      // deleteTokens(argc, argv); //We free this from the new thread
     }
+    machine->WriteRegister(2,res);
+    break;
+
+  case SC_Join:
+    res = syscallJoin((SpaceId)getArg(1));
+    machine->WriteRegister(2,res);
+    break;
+
+  case SC_Create:
+    if (readString(getArg(1), arg))
+      syscallCreate(arg.c_str());
+    break;
+
+  case SC_Open:
+    if (readString(getArg(1), arg))
+      res = syscallOpen(arg.c_str());
+    else 
+      res = -1;
+    machine->WriteRegister(2,res);
+    break;
+
+  case SC_Read:
+    if (getArg(2) <= 0){
+      machine->WriteRegister(2,-1);
+      break;
+    }
+    buf = new char[getArg(2)];
+    res = (int) syscallRead(buf , getArg(2),(OpenFileId) getArg(3));
+    if (!writeBuffer(buf,res,getArg(1)))
+      res = -1;
+    //Set return value
+    delete buf;
+    machine->WriteRegister(2,res);
+    break;
+
+  case SC_Write:
+    if (getArg(2) <= 0)
+      break;
+    buf = new char[getArg(2)];
+    if (readBuffer(getArg(1), getArg(2), buf)){
+      syscallWrite(buf,getArg(2),(OpenFileId) getArg(3));
+    }
+    delete buf;
+    break;
+
+  case SC_Close:
+    syscallClose((OpenFileId) getArg(1));
+    break;
+
+  case SC_Fork:
+    break;
+
+  case SC_Yield:
+    syscallYield();
+    break;
+
+  default:
+    printf("Unexpected syscall code %d\n", type);
+    ASSERT(FALSE);
+  }
       
 
     //Advance Program counter
@@ -158,13 +199,11 @@ ExceptionHandler(ExceptionType which)
     machine->WriteRegister(PrevPCReg, PCRegVal);
     machine->WriteRegister(PCReg, NextPCRegVal);
     machine->WriteRegister(NextPCReg, NextPCRegVal+4);
-  }
-
-  else {
-    printf("Unexpected user mode exception %d %d\n", which, type);
-    ASSERT(FALSE);
-  }
 }
+
+
+
+
 
 int getArg(int num){
   return  machine->ReadRegister(3+num);

@@ -40,7 +40,8 @@ class SynchConsole {
   Semaphore* readAvail;
   Semaphore* writeDone;
   Console* console;
-  Lock*       lock;
+  Lock*       readLock;
+  Lock*       writeLock;
 
 };
 

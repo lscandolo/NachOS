@@ -17,28 +17,30 @@ SynchConsole::SynchConsole(char* in, char* out){
 
   readAvail = new Semaphore(std::string("read_semaphore_SynchConsole"),0);
   writeDone = new Semaphore(std::string("write_semaphore_SynchConsole"),0);
-  lock      = new Lock(std::string("lock_SynchConsole"));
+  readLock      = new Lock(std::string("readLock_SynchConsole"));
+  writeLock      = new Lock(std::string("writeLock_SynchConsole"));
 }
 
 SynchConsole::~SynchConsole(){
 
-  delete lock;
+  delete readLock;
+  delete writeLock;
   delete writeDone;
   delete readAvail;
   delete console;
 }
 
 void SynchConsole::put(char c){
-  lock->Acquire();
+  writeLock->Acquire();
   console->PutChar(c);
   writeDone->P();
-  lock->Release();
+  writeLock->Release();
 }
 
 const char SynchConsole::get(){
-  lock->Acquire();
+  readLock->Acquire();
   readAvail->P();
   char c = console->GetChar();
-  lock->Release();
+  readLock->Release();
   return c;
 }

@@ -318,8 +318,16 @@ void AddrSpace::SaveState()
 
 void AddrSpace::RestoreState() 
 {
+#ifndef USE_TLB
   machine->pageTable = pageTable;
   machine->pageTableSize = numPages;
+#else
+#endif
+}
+
+TranslationEntry AddrSpace::pageTableEntry(int vpage){
+  ASSERT(vpage > 0 && vpage < numPages);
+  return pageTable[vpage];
 }
 
 bool writeArgBuffer(char* buf, int size, int virtAddr){

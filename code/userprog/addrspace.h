@@ -38,6 +38,8 @@ class AddrSpace {
   void SaveState();			// Save/restore address space-specific
   void RestoreState();		// info on a context switch 
 
+  TranslationEntry pageTableEntry(int vpage); //Get entry from page table
+
   //Copy initial arguments into address space
   void copyArguments(int argc, char** argv, int initialArgAddress);
 

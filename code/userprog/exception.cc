@@ -25,9 +25,15 @@
 #include "system.h" //Nunca poner system debajo de syscall!!
 #include "syscall.h"
 #include "addrspace.h"
+
+#ifdef USE_TLB
+#include "../vm/mmu.h"
+#endif
+
 #include <string>
 #include <sstream>
 #include <vector>
+
 
 int getArg(int num);
 bool readString(int virtAddr,std::string& str);
@@ -72,8 +78,9 @@ ExceptionHandler(ExceptionType which)
   case(NoException): // Everything ok!
     break;
   case(PageFaultException):    // No valid translation found
-    printf("Unexpected Exception type: %d",which);
-    ASSERT(FALSE);
+#ifdef USE_TLB
+    PageFaultHandler(machine->ReadRegister(BadVAddrReg));
+#endif    
     break;
   case(ReadOnlyException):     // Write attempted to page marked "read-only"
     printf("Unexpected Exception type: %d",which);

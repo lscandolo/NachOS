@@ -46,7 +46,8 @@ void        syscallHalt(){
 /////////////////////////Exit/////////////////////////
 void        syscallExit(int status){
   DEBUG('m', "Syscall Exit called with status: %d\n",status);
-  printf("Thread %s exited with status: %d\n",currentThread->getName().c_str(),status);
+  if (status)
+    printf("Thread %s exited with status: %d\n",currentThread->getName().c_str(),status);
   currentThread->Finish();
 }
 

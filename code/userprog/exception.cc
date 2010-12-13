@@ -42,6 +42,8 @@ bool writeBuffer(char* buf, int size, int virtAddr);
 int tokenize(std::string str, char **&tokens);
 void deleteTokens(int argc, char **tokens);
 void SyscallHandler(int type);
+bool ReadMem(int addr, int size, int *value);
+bool WriteMem(int addr, int size, int value);
 
 //----------------------------------------------------------------------
 // ExceptionHandler
@@ -176,6 +178,12 @@ void SyscallHandler(int type){
       break;
     buf = new char[getArg(2)];
     if (readBuffer(getArg(1), getArg(2), buf)){
+
+      // printf("Write Buffer: [");
+      // for (int i = 0; i < getArg(2); i++)
+      // 	printf("%c",buf[i]);
+      // printf("]\n");
+
       syscallWrite(buf,getArg(2),(OpenFileId) getArg(3));
     }
     delete buf;
@@ -208,10 +216,6 @@ void SyscallHandler(int type){
     machine->WriteRegister(NextPCReg, NextPCRegVal+4);
 }
 
-
-
-
-
 int getArg(int num){
   return  machine->ReadRegister(3+num);
 }
@@ -223,7 +227,7 @@ bool readString(int virtAddr,std::string& str){
   bool res = true;
 
   while (res  && c != '\0'){
-    res = machine->ReadMem(virtAddr,1,&c);
+    res = ReadMem(virtAddr,1,&c);
     virtAddr++;
     str += (char)c;
   }
@@ -234,7 +238,7 @@ bool readString(int virtAddr,std::string& str){
 bool readBuffer(int virtAddr, int size, char* buf){
   int rc;
   for (int i = 0; i < size ; i++,virtAddr++){
-    if (!machine->ReadMem(virtAddr, 1, &rc))
+    if (!ReadMem(virtAddr, 1, &rc))
       return false;
     buf[i] = rc;
   }
@@ -244,11 +248,90 @@ bool readBuffer(int virtAddr, int size, char* buf){
 
 bool writeBuffer(char* buf, int size, int virtAddr){
   for (int i = 0; i < size ; i++,virtAddr++){
-    if (!machine->WriteMem(virtAddr, 1, buf[i]))
+    if (!WriteMem(virtAddr, 1, buf[i]))
       return false;
   }
   return true;
 }
+
+bool
+ReadMem(int addr, int size, int *value){
+    int data;
+    ExceptionType exception;
+    int physicalAddress;
+    
+    stats->numMemAccess++;
+    DEBUG('a', "Reading VA 0x%x, size %d\n", addr, size);
+
+    do {
+      exception = machine->Translate(addr, &physicalAddress, size, FALSE);
+      if (exception != NoException) {
+	machine->WriteRegister(BadVAddrReg, addr);
+	ExceptionHandler(exception);
+      }
+    } while (exception != NoException);
+
+    switch (size) {
+      case 1:
+	data = machine->mainMemory[physicalAddress];
+	*value = data;
+	break;
+	
+      case 2:
+	data = *(unsigned short *) &machine->mainMemory[physicalAddress];
+	*value = ShortToHost(data);
+	break;
+	
+      case 4:
+	data = *(unsigned int *) &machine->mainMemory[physicalAddress];
+	*value = WordToHost(data);
+	break;
+
+      default: ASSERT(FALSE);
+    }
+    
+    DEBUG('a', "\tvalue read = %8.8x\n", *value);
+    return (TRUE);
+}
+
+bool
+WriteMem(int addr, int size, int value){
+    ExceptionType exception;
+    int physicalAddress;
+     
+    stats->numMemAccess++;
+    DEBUG('a', "Writing VA 0x%x, size %d, value 0x%x\n", addr, size, value);
+
+    do {
+      exception = machine->Translate(addr, &physicalAddress, size, FALSE);
+      if (exception != NoException) {
+	machine->WriteRegister(BadVAddrReg, addr);
+	ExceptionHandler(exception);
+      }
+    } while (exception != NoException);
+
+    switch (size) {
+      case 1:
+	machine->mainMemory[physicalAddress] = (unsigned char) (value & 0xff);
+	break;
+
+      case 2:
+	*(unsigned short *) &machine->mainMemory[physicalAddress]
+		= ShortToMachine((unsigned short) (value & 0xffff));
+	break;
+      
+      case 4:
+	*(unsigned int *) &machine->mainMemory[physicalAddress]
+		= WordToMachine((unsigned int) value);
+	break;
+	
+      default: ASSERT(FALSE);
+    }
+    
+    return TRUE;
+  
+}
+
 
 std::vector<std::string> &split(const std::string &s, char delim, std::vector<std::string> &elems) {
     std::stringstream ss(s);
@@ -260,12 +343,10 @@ std::vector<std::string> &split(const std::string &s, char delim, std::vector<st
     return elems;
 }
 
-
 std::vector<std::string> split(const std::string &s, char delim) {
     std::vector<std::string> elems;
     return split(s, delim, elems);
 }
-
 
 // std::vector<std::string> tokenize(std::string str){
 //   return split(str, ' ');

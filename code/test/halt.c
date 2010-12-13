@@ -13,23 +13,29 @@
 #include "syscall.h"
 
 int
-/* main(int argc, char** argv) */
-main ()
+main(int argc, char** argv)
+/* main () */
 {
 
+  int i;
+  int prog;
   char *buf = "HOLA MUNDO SOY HALT!\n";
 
-  /* Exec("test/halt2 a b c d e f "); */
+  for(i = 0; i < argc; i++){
+    Write(argv[i],1,1);
+  }
 
-  Write(buf,21,1);
+  Write(buf,22,1);
 
-  Exec("test/halt2");
+  prog = Exec("test/halt2 a b c d e f ");
+  /* Exec("test/halt2"); */
 
   /* while(1) */
   /*     Write("A",1,1); */
 
-  Exit(123);
-    /* Halt(); */
+  Join(prog);
+  /* Exit(125); */
+    Halt();
     /* not reached */
 }
 

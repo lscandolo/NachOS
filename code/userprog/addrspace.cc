@@ -24,6 +24,7 @@
 #define MAX(a,b)  (((a) > (b)) ? (a) : (b))
 
 bool writeArgBuffer(char* buf, int size, int virtAddr);
+bool WriteMem(int addr, int size, int value);
 
 //----------------------------------------------------------------------
 // SwapHeader
@@ -114,12 +115,12 @@ bool AddrSpace::Initialize(OpenFile *executable, int argc, char** argv,  int* us
     for (i = 0; i < numPages; i++){
       for(;usedVirtPages[j] && j < usedVirtPages.size(); j++);
 
-      pageTable[i].virtualPage = j;	// for now, virtual page # = phys page #
+      pageTable[i].virtualPage = i;	// for now, virtual page # = phys page #
       pageTable[i].physicalPage = j;
-      pageTable[i].valid = TRUE;
-      pageTable[i].use = FALSE;
-      pageTable[i].dirty = FALSE;
-      pageTable[i].readOnly = FALSE;  // if the code segment was entirely on 
+      pageTable[i].valid = true;
+      pageTable[i].use = false;
+      pageTable[i].dirty = false;
+      pageTable[i].readOnly = false;  // if the code segment was entirely on 
 					// a separate page, we could set its 
 					// pages to be read-only
 
@@ -305,7 +306,7 @@ AddrSpace::InitRegisters()
 
 void AddrSpace::SaveState() 
 {
-  
+
 }
 
 //----------------------------------------------------------------------
@@ -322,18 +323,55 @@ void AddrSpace::RestoreState()
   machine->pageTable = pageTable;
   machine->pageTableSize = numPages;
 #else
+  for(int i = 0; i < TLBSize; i++)
+    machine->tlb[i].valid = false;
 #endif
 }
 
 TranslationEntry AddrSpace::pageTableEntry(int vpage){
-  ASSERT(vpage > 0 && vpage < numPages);
+  ASSERT(vpage >= 0 && vpage < numPages);
   return pageTable[vpage];
 }
 
 bool writeArgBuffer(char* buf, int size, int virtAddr){
   for (int i = 0; i < size ; i++,virtAddr++){
-    if (!machine->WriteMem(virtAddr, 1, buf[i]))
+    if (!WriteMem(virtAddr, 1, buf[i]))
       return false;
   }
   return true;
 }
+
+// bool
+// WriteMem(int addr, int size, int value){
+//     ExceptionType exception;
+//     int physicalAddress;
+     
+//     DEBUG('a', "Writing VA 0x%x, size %d, value 0x%x\n", addr, size, value);
+
+//     do {
+//       exception = machine->Translate(addr, &physicalAddress, size, FALSE);
+//       if (exception != NoException) 
+// 	ExceptionHandler(exception);
+//     } while (exception != NoException);
+
+//     switch (size) {
+//       case 1:
+// 	machine->mainMemory[physicalAddress] = (unsigned char) (value & 0xff);
+// 	break;
+
+//       case 2:
+// 	*(unsigned short *) &machine->mainMemory[physicalAddress]
+// 		= ShortToMachine((unsigned short) (value & 0xffff));
+// 	break;
+      
+//       case 4:
+// 	*(unsigned int *) &machine->mainMemory[physicalAddress]
+// 		= WordToMachine((unsigned int) value);
+// 	break;
+	
+//       default: ASSERT(FALSE);
+//     }
+    
+//     return TRUE;
+  
+// }

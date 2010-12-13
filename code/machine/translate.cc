@@ -191,6 +191,8 @@ Machine::Translate(int virtAddr, int* physAddr, int size, bool writing)
     TranslationEntry *entry;
     unsigned int pageFrame;
 
+    stats->numMemAccess++; // Advance stats on memoryAccesses
+
     DEBUG('a', "\tTranslate 0x%x, %s: ", virtAddr, writing ? "write" : "read");
 
 // check for alignment errors
@@ -208,6 +210,8 @@ Machine::Translate(int virtAddr, int* physAddr, int size, bool writing)
     vpn = (unsigned) virtAddr / PageSize;
     offset = (unsigned) virtAddr % PageSize;
     
+
+    ////////////////////////////////////// PAGE TABLE //////////////////////////////////
     if (tlb == NULL) {		// => page table => vpn is index into table
 	if (vpn >= pageTableSize) {
 	    DEBUG('a', "virtual page # %d too large for page table size %d!\n", 
@@ -220,6 +224,7 @@ Machine::Translate(int virtAddr, int* physAddr, int size, bool writing)
 	}
 	entry = &pageTable[vpn];
     } 
+    //////////////////////////////////////// TLB ///////////////////////////////////////////
     else {                   // => Using tlb!!
         for (entry = NULL, i = 0; i < TLBSize; i++)
     	    if (tlb[i].valid && (tlb[i].virtualPage == vpn)) {
@@ -233,6 +238,8 @@ Machine::Translate(int virtAddr, int* physAddr, int size, bool writing)
 						// but not in the TLB
 	}
     }
+
+    /////////////////////////////////////////////////////////////////////////////////////////
 
     if (entry->readOnly && writing) {	// trying to write to a read-only page
 	DEBUG('a', "%d mapped read-only at %d in TLB!\n", virtAddr, i);

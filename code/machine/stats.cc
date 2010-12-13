@@ -22,6 +22,8 @@ Statistics::Statistics()
     numDiskReads = numDiskWrites = 0;
     numConsoleCharsRead = numConsoleCharsWritten = 0;
     numPageFaults = numPacketsSent = numPacketsRecvd = 0;
+     numMemAccess = numTLBSoftMiss = numTLBHardMiss = 0;
+
 }
 
 //----------------------------------------------------------------------
@@ -41,4 +43,8 @@ Statistics::Print()
     printf("Paging: faults %d\n", numPageFaults);
     printf("Network I/O: packets received %d, sent %d\n", numPacketsRecvd, 
 	numPacketsSent);
+    printf("Memory accesses: %llu\n",numMemAccess);
+    float softRatio = 100.0 * ((float(numMemAccess) - numTLBSoftMiss) / numMemAccess);
+    float hardRatio = 100.0 * ((float(numMemAccess) - numTLBHardMiss) / numMemAccess);
+    printf("TLB soft/hard hit ratio: %f/%f\n", softRatio,hardRatio  );
 }

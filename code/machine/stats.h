@@ -36,6 +36,10 @@ class Statistics {
     unsigned long long numPacketsSent;		// number of packets sent over the network
     unsigned long long numPacketsRecvd;	// number of packets received over the network
 
+    unsigned long long numMemAccess;    // number of accesses to main memory
+    unsigned long long numTLBSoftMiss;    // number of times page is not in tlb
+    unsigned long long numTLBHardMiss; // number of times page is not in main memory
+
     Statistics(); 		// initialize everything to zero
 
     void Print();		// print collected statistics

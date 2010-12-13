@@ -81,6 +81,7 @@ main(int argc, char **argv)
     int argCount;			// the number of arguments 
 					// for a particular command
 
+    srand(time(0));
     DEBUG('t', "Entering main");
     (void) Initialize(argc, argv);
     

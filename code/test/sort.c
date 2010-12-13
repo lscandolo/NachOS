@@ -9,20 +9,25 @@
 
 #include "syscall.h"
 
-int A[1024];	/* size of physical memory; with code, we'll run out of space!*/
+#define SIZE 25
+
+int A[SIZE];	/* size of physical memory; with code, we'll run out of space!*/
 
 int
 main()
 {
     int i, j, tmp;
+    char* buf = "A\n";
     
     /* first initialize the array, in reverse sorted order */
-    for (i = 0; i < 1024; i++)		
-        A[i] = 1023 - i;
+    for (i = 0; i < SIZE; i++)		
+        A[i] = SIZE - 1 - i;
 
     /* then sort! */
-    for (i = 0; i < 1023; i++){
-      for (j = 0; j < (1023 - i); j++){
+    for (i = 0; i <= SIZE; i++){
+
+      Write(buf,2,1);
+      for (j = 0; j < (SIZE - 1 - i); j++){
 	if (A[j] > A[j + 1]) {	/* out of order -> need to swap ! */
 	  tmp = A[j];
 	  A[j] = A[j + 1];

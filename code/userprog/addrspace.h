@@ -15,6 +15,7 @@
 
 #include "copyright.h"
 #include "filesys.h"
+#include "noff.h"
 
 #define UserStackSize		1024 	// increase this as necessary!
 
@@ -32,6 +33,8 @@ class AddrSpace {
   // initializing it with the program
   // stored in the file "executable"
 
+  bool loadPageOnDemand(int page, int frame);
+
   void InitRegisters();		// Initialize user-level CPU registers,
   // before jumping to user code
 
@@ -39,6 +42,10 @@ class AddrSpace {
   void RestoreState();		// info on a context switch 
 
   TranslationEntry pageTableEntry(int vpage); //Get entry from page table
+  void savePageTableEntry(TranslationEntry entry, int vpage){  // Save an entry to the page table
+    ASSERT(vpage >= 0 && vpage < numPages);
+    pageTable[vpage] = entry;
+  }
 
   //Copy initial arguments into address space
   void copyArguments(int argc, char** argv, int initialArgAddress);
@@ -49,6 +56,8 @@ class AddrSpace {
   unsigned int numPages;		// Number of pages in the virtual 
   // address space
 
+  OpenFile* executable;
+  NoffHeader noffH;
 
 };
 

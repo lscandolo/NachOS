@@ -81,7 +81,8 @@ SpaceId     syscallExec(int argc, char** argv){
   child->space = space;
   child->Fork( (VoidFunctionPtr) threadRun, (int)userSpaceArgs);
   
-  delete executable;
+  // delete executable; //The addrspace destructor handles this now
+
   return (SpaceId) child;
 }
 

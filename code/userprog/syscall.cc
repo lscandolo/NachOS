@@ -23,11 +23,14 @@ void threadRun(int argPtr){
   currentThread->space->InitRegisters();		// set the initial register values
   currentThread->space->RestoreState();		// load page table register
 
+  currentThread->space->swap = new Swap((int)currentThread,
+					currentThread->space->numPages);
+
   Args* userSpaceArgs = (Args*) argPtr;
 
   currentThread->space->copyArguments(userSpaceArgs->argc,
-				                                             userSpaceArgs->argv,
-				                                             userSpaceArgs->userSpaceArgv);
+				      userSpaceArgs->argv,
+				      userSpaceArgs->userSpaceArgv);
 
   machine->WriteRegister(4,userSpaceArgs->argc);
   machine->WriteRegister(5,userSpaceArgs->userSpaceArgv);

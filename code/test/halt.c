@@ -34,8 +34,8 @@ main(int argc, char** argv)
   /*     Write("A",1,1); */
 
   Join(prog);
-  /* Exit(125); */
-    Halt();
+  Exit(125);
+    /* Halt(); */
     /* not reached */
 }
 

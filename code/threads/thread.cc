@@ -54,6 +54,7 @@ Thread::Thread(std::string threadName, bool joinable)
 #ifdef USER_PROGRAM
     space = NULL;
     fdtable = new FDTable();
+    coremap->addThread(this);
 #endif
 }
 
@@ -84,6 +85,7 @@ Thread::~Thread()
     if (space != NULL)
       delete space;
     delete fdtable;
+    coremap->delThread(this);
 #endif 
 
 }
@@ -202,8 +204,15 @@ Thread::Finish ()
       joinPort->Send(status);
     }
     
-    threadToBeDestroyed = currentThread;
+#ifdef USER_PROGRAM    
+    if (coremap->onlyThread()){
+      printf("\n\nNo more threads running... halting\n\n");
+      stats->Print();
+      Cleanup();
+    }
+#endif
 
+    threadToBeDestroyed = currentThread;
     Sleep();					// invokes SWITCH
     // not reached
 }

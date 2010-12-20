@@ -30,12 +30,19 @@ extern Statistics *stats;			// performance metrics
 extern Timer *timer;				// the hardware alarm clock
 
 #ifdef USER_PROGRAM
+
 #include "machine.h"
 extern Machine* machine;	                // user program memory and registers
+
 #include "synchconsole.h"
 extern SynchConsole* synchConsole;            // The synchronised console
-#include <bitset>
-extern std::bitset<NumVirtPages> usedVirtPages;
+
+/* #include <bitset> */
+/* extern std::bitset<NumVirtPages> usedVirtPages; */
+
+#include "coremap.h"
+extern CoreMap* coremap;
+
 #endif
 
 #ifdef USE_TLB

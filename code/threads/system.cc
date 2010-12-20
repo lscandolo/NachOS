@@ -30,7 +30,7 @@ SynchDisk   *synchDisk;
 #ifdef USER_PROGRAM	// requires either FILESYS or FILESYS_STUB
 Machine *machine;	// user program memory and registers
 SynchConsole* synchConsole; //Console
-std::bitset<NumVirtPages> usedVirtPages;
+CoreMap* coremap; // Map with info about physical memory frames
 #endif
 
 #ifdef NETWORK
@@ -47,8 +47,10 @@ PostOffice *postOffice;
 //----------------------------------------------------------------------
 
 void Preempt(int arg){
+#ifdef USER_PROGRAM	
   interrupt->Schedule((VoidFunctionPtr) Preempt, 0, UserSlice, TimerInt);
   interrupt->YieldOnReturn();
+#endif
 }
 
 //----------------------------------------------------------------------
@@ -65,8 +67,9 @@ Cleanup()
 #endif
     
 #ifdef USER_PROGRAM
+    delete coremap; //This does cleanup of threads
     delete machine;
-    delete synchConsole;
+    // delete synchConsole;
 #endif
 
 #ifdef FILESYS_NEEDED
@@ -126,6 +129,7 @@ Initialize(int argc, char **argv)
     bool randomYield = FALSE;
 
 #ifdef USER_PROGRAM
+    coremap = new CoreMap();
     bool debugUserProg = FALSE;	// single step user program
 #endif
 #ifdef FILESYS_NEEDED
@@ -189,12 +193,13 @@ Initialize(int argc, char **argv)
     currentThread->setStatus(RUNNING);
 
     interrupt->Enable();
-    CallOnUserAbort(Cleanup);			// if user hits ctl-C
+    CallOnUserAbort(Cleanup);			// if user hits ctrl-C
     
 #ifdef USER_PROGRAM
     machine = new Machine(debugUserProg);	  // this must come first
-    synchConsole = new SynchConsole(NULL,NULL); // Console for user programs
-    usedVirtPages.reset();
+    // synchConsole = new SynchConsole(NULL,NULL); // Console for user programs
+
+    // Preemption interrupt
     interrupt->Schedule((VoidFunctionPtr) Preempt, 0, UserSlice, TimerInt);
 #endif
 

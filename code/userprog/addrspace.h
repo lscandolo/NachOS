@@ -16,6 +16,7 @@
 #include "copyright.h"
 #include "filesys.h"
 #include "noff.h"
+#include "swap.h"
 
 #define UserStackSize		1024 	// increase this as necessary!
 
@@ -47,17 +48,38 @@ class AddrSpace {
     pageTable[vpage] = entry;
   }
 
+  void setValidity(int vpage, bool valid){
+    ASSERT(vpage >= 0 && vpage < numPages);
+    pageTable[vpage].valid = valid;
+  }
+  
+  void setDirty(int vpage, bool dirty){
+    ASSERT(vpage >= 0 && vpage < numPages);
+    pageTable[vpage].dirty = dirty;
+  }
+
   //Copy initial arguments into address space
   void copyArguments(int argc, char** argv, int initialArgAddress);
 
+  int getPageNumber(int frame){
+    for (int i = 0; i < numPages; i++)
+      if (pageTable[i].physicalPage == frame &&
+	  pageTable[i].valid)
+	return i;
+
+    return -1;
+  }
+
  private:
-  TranslationEntry *pageTable;	// Assume linear page table translation
-  // for now!
-  unsigned int numPages;		// Number of pages in the virtual 
-  // address space
+  TranslationEntry *pageTable;
 
   OpenFile* executable;
   NoffHeader noffH;
+
+ public:
+  
+  unsigned int numPages; // Number of pages in the virtual address space
+  Swap* swap;
 
 };
 

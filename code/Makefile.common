@@ -79,7 +79,9 @@ USERPROG_H = ../userprog/addrspace.h\
 	../machine/translate.h\
 	../userprog/syscall.h\
 	../machine/synchconsole.h\
-	../userprog/fdtable.h
+	../userprog/fdtable.h\
+	../userprog/swap.h\
+	../userprog/coremap.h
 
 USERPROG_C = ../userprog/addrspace.cc\
 	../userprog/bitmap.cc\
@@ -91,10 +93,12 @@ USERPROG_C = ../userprog/addrspace.cc\
 	../machine/translate.cc\
 	../userprog/syscall.cc\
 	../machine/synchconsole.cc\
-	../userprog/fdtable.cc
+	../userprog/fdtable.cc\
+	../userprog/swap.cc\
+	../userprog/coremap.cc
 
 USERPROG_O = addrspace.o bitmap.o exception.o progtest.o console.o machine.o \
-	mipssim.o translate.o syscall.o synchconsole.o fdtable.o
+	mipssim.o translate.o syscall.o synchconsole.o fdtable.o swap.o coremap.o
 
 VM_H =  ../vm/mmu.h
 VM_C =  ../vm/mmu.cc

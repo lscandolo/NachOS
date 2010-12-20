@@ -20,6 +20,42 @@
 //	memory, and jump to it.
 //----------------------------------------------------------------------
 
+void test(AddrSpace* space){
+
+  int i;
+
+  for (i = 0; i < PageSize; i++)
+    machine->mainMemory[i] = i;
+
+  machine->tlb[0].physicalPage = 0;
+  machine->tlb[0].valid = true;
+  machine->tlb[0].dirty = true;
+  machine->tlb[0].virtualPage = 0;
+
+  space->savePageTableEntry(machine->tlb[0],0);
+
+  space->swap->swapOut(0);
+
+   for (i = 0; i < PageSize; i++)
+     machine->mainMemory[i] = 0;
+
+
+
+  space->swap->swapIn(0,0);
+
+
+   printf("\n");
+
+   for (i = 0; i < PageSize; i++)
+     printf("%d ",machine->mainMemory[i]);
+
+   printf("\n");
+
+   exit(-1);
+
+}
+
+
 void
 StartProcess(char *filename)
 {
@@ -38,10 +74,13 @@ StartProcess(char *filename)
 
     currentThread->space = space;
 
-    // delete executable;			// close file
-
     space->InitRegisters();		// set the initial register values
     space->RestoreState();		// load page table register
+
+    space->swap = new Swap((int)currentThread,
+			   space->numPages);
+
+    // test(space);
 
     machine->Run();			// jump to the user progam
     ASSERT(FALSE);			// machine->Run never returns;

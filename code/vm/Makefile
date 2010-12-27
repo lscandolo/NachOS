@@ -125,7 +125,8 @@ main.o: ../threads/main.cc ../threads/copyright.h ../threads/utility.h \
  ../machine/console.h ../threads/thread.h ../threads/synch.h \
  ../userprog/coremap.h /usr/include/c++/4.4/bitset \
  /usr/include/c++/4.4/map /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc
 list.o: ../threads/list.cc ../threads/copyright.h ../threads/list.h \
  ../threads/utility.h ../machine/sysdep.h ../threads/copyright.h \
  /usr/include/stdlib.h /usr/include/features.h \
@@ -222,7 +223,8 @@ list.o: ../threads/list.cc ../threads/copyright.h ../threads/list.h \
  ../machine/console.h ../threads/thread.h ../threads/synch.h \
  ../userprog/coremap.h /usr/include/c++/4.4/bitset \
  /usr/include/c++/4.4/map /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc
 scheduler.o: ../threads/scheduler.cc ../threads/copyright.h \
  ../threads/scheduler.h ../threads/list.h ../threads/utility.h \
  ../machine/sysdep.h ../threads/copyright.h /usr/include/stdlib.h \
@@ -319,7 +321,8 @@ scheduler.o: ../threads/scheduler.cc ../threads/copyright.h \
  ../machine/console.h ../threads/thread.h ../threads/synch.h \
  ../userprog/coremap.h /usr/include/c++/4.4/bitset \
  /usr/include/c++/4.4/map /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc
 synch.o: ../threads/synch.cc ../threads/copyright.h ../threads/synch.h \
  ../threads/list.h ../threads/utility.h ../machine/sysdep.h \
  ../threads/copyright.h /usr/include/stdlib.h /usr/include/features.h \
@@ -416,7 +419,8 @@ synch.o: ../threads/synch.cc ../threads/copyright.h ../threads/synch.h \
  ../machine/console.h ../threads/thread.h ../threads/synch.h \
  ../userprog/coremap.h /usr/include/c++/4.4/bitset \
  /usr/include/c++/4.4/map /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc
 synchlist.o: ../threads/synchlist.cc ../threads/copyright.h \
  ../threads/synchlist.h ../threads/list.h ../threads/utility.h \
  ../machine/sysdep.h ../threads/copyright.h /usr/include/stdlib.h \
@@ -598,7 +602,8 @@ system.o: ../threads/system.cc ../threads/copyright.h ../threads/system.h \
  ../machine/console.h ../threads/thread.h ../threads/synch.h \
  ../userprog/coremap.h /usr/include/c++/4.4/bitset \
  /usr/include/c++/4.4/map /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc
 thread.o: ../threads/thread.cc ../threads/copyright.h ../threads/thread.h \
  ../threads/utility.h ../machine/sysdep.h ../threads/copyright.h \
  /usr/include/stdlib.h /usr/include/features.h \
@@ -696,7 +701,8 @@ thread.o: ../threads/thread.cc ../threads/copyright.h ../threads/thread.h \
  ../threads/thread.h ../threads/synch.h ../userprog/coremap.h \
  /usr/include/c++/4.4/bitset /usr/include/c++/4.4/map \
  /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h \
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc \
  ../threads/../userprog/fdtable.h \
  ../threads/../userprog/../filesys/filesys.h ../threads/system.h
 utility.o: ../threads/utility.cc ../threads/copyright.h \
@@ -815,7 +821,8 @@ threadtest.o: ../threads/threadtest.cc ../threads/copyright.h \
  ../machine/console.h ../threads/thread.h ../threads/synch.h \
  ../userprog/coremap.h /usr/include/c++/4.4/bitset \
  /usr/include/c++/4.4/map /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc
 interrupt.o: ../machine/interrupt.cc ../threads/copyright.h \
  ../machine/interrupt.h ../threads/list.h ../threads/copyright.h \
  ../threads/utility.h ../machine/sysdep.h /usr/include/stdlib.h \
@@ -912,7 +919,8 @@ interrupt.o: ../machine/interrupt.cc ../threads/copyright.h \
  ../threads/thread.h ../threads/synch.h ../userprog/coremap.h \
  /usr/include/c++/4.4/bitset /usr/include/c++/4.4/map \
  /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc
 sysdep.o: ../machine/sysdep.cc ../threads/copyright.h \
  /usr/include/unistd.h /usr/include/features.h \
  /usr/include/bits/predefs.h /usr/include/sys/cdefs.h \
@@ -1020,7 +1028,8 @@ sysdep.o: ../machine/sysdep.cc ../threads/copyright.h \
  ../threads/thread.h ../threads/synch.h ../userprog/coremap.h \
  /usr/include/c++/4.4/bitset /usr/include/c++/4.4/map \
  /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc
 stats.o: ../machine/stats.cc ../threads/copyright.h ../threads/utility.h \
  ../threads/copyright.h ../machine/sysdep.h /usr/include/stdlib.h \
  /usr/include/features.h /usr/include/bits/predefs.h \
@@ -1137,7 +1146,8 @@ timer.o: ../machine/timer.cc ../threads/copyright.h ../machine/timer.h \
  ../threads/thread.h ../threads/synch.h ../userprog/coremap.h \
  /usr/include/c++/4.4/bitset /usr/include/c++/4.4/map \
  /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc
 addrspace.o: ../userprog/addrspace.cc ../threads/copyright.h \
  ../threads/system.h ../threads/copyright.h ../threads/utility.h \
  ../machine/sysdep.h /usr/include/stdlib.h /usr/include/features.h \
@@ -1234,7 +1244,9 @@ addrspace.o: ../userprog/addrspace.cc ../threads/copyright.h \
  ../machine/console.h ../threads/thread.h ../threads/synch.h \
  ../userprog/coremap.h /usr/include/c++/4.4/bitset \
  /usr/include/c++/4.4/map /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h ../userprog/addrspace.h
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc \
+ ../userprog/addrspace.h
 bitmap.o: ../userprog/bitmap.cc ../threads/copyright.h \
  ../userprog/bitmap.h ../threads/utility.h ../threads/copyright.h \
  ../machine/sysdep.h /usr/include/stdlib.h /usr/include/features.h \
@@ -1351,8 +1363,9 @@ exception.o: ../userprog/exception.cc ../threads/copyright.h \
  ../machine/console.h ../threads/thread.h ../threads/synch.h \
  ../userprog/coremap.h /usr/include/c++/4.4/bitset \
  /usr/include/c++/4.4/map /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h ../userprog/syscall.h \
- ../userprog/addrspace.h ../userprog/../vm/mmu.h \
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc \
+ ../userprog/syscall.h ../userprog/addrspace.h ../userprog/../vm/mmu.h \
  /usr/include/c++/4.4/sstream /usr/include/c++/4.4/bits/sstream.tcc
 progtest.o: ../userprog/progtest.cc ../threads/copyright.h \
  ../threads/system.h ../threads/copyright.h ../threads/utility.h \
@@ -1450,8 +1463,9 @@ progtest.o: ../userprog/progtest.cc ../threads/copyright.h \
  ../machine/console.h ../threads/thread.h ../threads/synch.h \
  ../userprog/coremap.h /usr/include/c++/4.4/bitset \
  /usr/include/c++/4.4/map /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h ../machine/console.h \
- ../userprog/addrspace.h
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc \
+ ../machine/console.h ../userprog/addrspace.h
 console.o: ../machine/console.cc ../threads/copyright.h \
  ../machine/console.h ../threads/utility.h ../threads/copyright.h \
  ../machine/sysdep.h /usr/include/stdlib.h /usr/include/features.h \
@@ -1548,7 +1562,8 @@ console.o: ../machine/console.cc ../threads/copyright.h \
  ../machine/timer.h ../machine/synchconsole.h ../threads/thread.h \
  ../threads/synch.h ../userprog/coremap.h /usr/include/c++/4.4/bitset \
  /usr/include/c++/4.4/map /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc
 machine.o: ../machine/machine.cc ../threads/copyright.h \
  ../machine/machine.h ../threads/utility.h ../threads/copyright.h \
  ../machine/sysdep.h /usr/include/stdlib.h /usr/include/features.h \
@@ -1645,7 +1660,8 @@ machine.o: ../machine/machine.cc ../threads/copyright.h \
  ../machine/console.h ../threads/thread.h ../threads/synch.h \
  ../userprog/coremap.h /usr/include/c++/4.4/bitset \
  /usr/include/c++/4.4/map /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc
 mipssim.o: ../machine/mipssim.cc ../threads/copyright.h \
  ../machine/machine.h ../threads/utility.h ../threads/copyright.h \
  ../machine/sysdep.h /usr/include/stdlib.h /usr/include/features.h \
@@ -1743,7 +1759,8 @@ mipssim.o: ../machine/mipssim.cc ../threads/copyright.h \
  ../machine/console.h ../threads/thread.h ../threads/synch.h \
  ../userprog/coremap.h /usr/include/c++/4.4/bitset \
  /usr/include/c++/4.4/map /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc
 translate.o: ../machine/translate.cc ../threads/copyright.h \
  ../machine/machine.h ../threads/utility.h ../threads/copyright.h \
  ../machine/sysdep.h /usr/include/stdlib.h /usr/include/features.h \
@@ -1838,7 +1855,8 @@ translate.o: ../machine/translate.cc ../threads/copyright.h \
  ../machine/console.h ../threads/thread.h ../threads/synch.h \
  ../userprog/coremap.h /usr/include/c++/4.4/bitset \
  /usr/include/c++/4.4/map /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc
 syscall.o: ../userprog/syscall.cc ../threads/system.h \
  ../threads/copyright.h ../threads/utility.h ../machine/sysdep.h \
  ../threads/copyright.h /usr/include/stdlib.h /usr/include/features.h \
@@ -1935,9 +1953,10 @@ syscall.o: ../userprog/syscall.cc ../threads/system.h \
  ../machine/console.h ../threads/thread.h ../threads/synch.h \
  ../userprog/coremap.h /usr/include/c++/4.4/bitset \
  /usr/include/c++/4.4/map /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h ../userprog/syscall.h \
- ../userprog/fdtable.h ../userprog/../filesys/filesys.h \
- ../userprog/addrspace.h
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc \
+ ../userprog/syscall.h ../userprog/fdtable.h \
+ ../userprog/../filesys/filesys.h ../userprog/addrspace.h
 synchconsole.o: ../machine/synchconsole.cc ../machine/synchconsole.h \
  ../machine/console.h ../threads/copyright.h ../threads/utility.h \
  ../threads/copyright.h ../machine/sysdep.h /usr/include/stdlib.h \
@@ -2126,9 +2145,10 @@ fdtable.o: ../userprog/fdtable.cc ../userprog/fdtable.h \
  ../machine/synchconsole.h ../machine/console.h ../threads/thread.h \
  ../threads/synch.h ../userprog/coremap.h /usr/include/c++/4.4/bitset \
  /usr/include/c++/4.4/map /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/algorithm \
- /usr/include/c++/4.4/bits/stl_algo.h /usr/include/c++/4.4/cstdlib \
- /usr/include/c++/4.4/bits/algorithmfwd.h \
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc \
+ /usr/include/c++/4.4/algorithm /usr/include/c++/4.4/bits/stl_algo.h \
+ /usr/include/c++/4.4/cstdlib /usr/include/c++/4.4/bits/algorithmfwd.h \
  /usr/include/c++/4.4/bits/stl_tempbuf.h
 swap.o: ../userprog/swap.cc ../threads/system.h ../threads/copyright.h \
  ../threads/utility.h ../machine/sysdep.h ../threads/copyright.h \
@@ -2226,8 +2246,10 @@ swap.o: ../userprog/swap.cc ../threads/system.h ../threads/copyright.h \
  ../machine/console.h ../threads/thread.h ../threads/synch.h \
  ../userprog/coremap.h /usr/include/c++/4.4/bitset \
  /usr/include/c++/4.4/map /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h ../userprog/syscall.h \
- /usr/include/c++/4.4/sstream /usr/include/c++/4.4/bits/sstream.tcc
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc \
+ ../userprog/syscall.h /usr/include/c++/4.4/sstream \
+ /usr/include/c++/4.4/bits/sstream.tcc
 coremap.o: ../userprog/coremap.cc ../threads/system.h \
  ../threads/copyright.h ../threads/utility.h ../machine/sysdep.h \
  ../threads/copyright.h /usr/include/stdlib.h /usr/include/features.h \
@@ -2324,7 +2346,9 @@ coremap.o: ../userprog/coremap.cc ../threads/system.h \
  ../machine/console.h ../threads/thread.h ../threads/synch.h \
  ../userprog/coremap.h /usr/include/c++/4.4/bitset \
  /usr/include/c++/4.4/map /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h ../userprog/coremap.h
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc \
+ ../userprog/coremap.h
 mmu.o: ../vm/mmu.cc ../threads/system.h ../threads/copyright.h \
  ../threads/utility.h ../machine/sysdep.h ../threads/copyright.h \
  /usr/include/stdlib.h /usr/include/features.h \
@@ -2421,7 +2445,9 @@ mmu.o: ../vm/mmu.cc ../threads/system.h ../threads/copyright.h \
  ../machine/console.h ../threads/thread.h ../threads/synch.h \
  ../userprog/coremap.h /usr/include/c++/4.4/bitset \
  /usr/include/c++/4.4/map /usr/include/c++/4.4/bits/stl_map.h \
- /usr/include/c++/4.4/bits/stl_multimap.h ../vm/mmu.h
+ /usr/include/c++/4.4/bits/stl_multimap.h /usr/include/c++/4.4/list \
+ /usr/include/c++/4.4/bits/stl_list.h /usr/include/c++/4.4/bits/list.tcc \
+ ../vm/mmu.h
 # DEPENDENCIES MUST END AT END OF FILE
 # IF YOU PUT STUFF HERE IT WILL GO AWAY
 # see make depend above

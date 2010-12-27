@@ -9,7 +9,7 @@
 
 #include "syscall.h"
 
-#define SIZE 25
+#define SIZE 1024
 
 int A[SIZE];	/* size of physical memory; with code, we'll run out of space!*/
 
@@ -26,7 +26,6 @@ main()
     /* then sort! */
     for (i = 0; i <= SIZE; i++){
 
-      Write(buf,2,1);
       for (j = 0; j < (SIZE - 1 - i); j++){
 	if (A[j] > A[j + 1]) {	/* out of order -> need to swap ! */
 	  tmp = A[j];

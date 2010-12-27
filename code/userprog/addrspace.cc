@@ -255,8 +255,11 @@ AddrSpace::~AddrSpace() {
   if (pageTable != NULL){
     // Mark the pages as free now
     for (int i = 0; i < numPages; i++){
-      if (pageTable[i].valid)
+      if (pageTable[i].valid){
 	coremap->usedFrames.set(pageTable[i].physicalPage,false);
+	coremap->setUnused(pageTable[i].physicalPage);
+      }
+      
     }
  
     delete pageTable;

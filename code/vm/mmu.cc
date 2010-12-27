@@ -69,8 +69,11 @@ int frameFreeIndex(){
     if (!coremap->usedFrames[j])
       return j;
 
-  //Else pick a random one
-  j = rand() % coremap->usedFrames.size();
+  //Pick a random one
+  // j = rand() % coremap->usedFrames.size();
+  //Super LRU megamode
+  j = coremap->getLRU();
+  coremap->setUsed(j);
 
   //If that page is in the tlb, mark it as invalid
   for (int i = 0; i < TLBSize; i++)
